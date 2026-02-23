@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Keepin™ – AI That Knows Where You Put That</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Caveat:wght@700&display=swap" rel="stylesheet"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
@@ -134,7 +134,14 @@ body{background:#fff;color:#1d1d1f;font-family:'Inter',-apple-system,sans-serif;
   padding:80px 32px 60px;text-align:center;
   border-bottom:1px solid rgba(0,0,0,.06);
 }
-.hero h1{font-size:clamp(36px,5.5vw,60px);font-weight:700;letter-spacing:-.5px;line-height:1.05;color:var(--text);max-width:680px;margin:0 auto 16px;}
+.hero h1{
+  font-family:'Caveat',cursive !important;
+  font-size:clamp(52px,7vw,96px) !important;
+  font-weight:700 !important;
+  letter-spacing:.5px !important;
+  line-height:1.15 !important;
+  color:#4a4040 !important;
+}
 .hero-sub{font-size:18px;color:var(--muted);max-width:460px;margin:0 auto 32px;font-weight:300;line-height:1.65;}
 .hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
 .btn{font-size:15px;font-weight:500;padding:12px 26px;border-radius:50px;cursor:pointer;text-decoration:none;font-family:'Inter',sans-serif;transition:all .2s;display:inline-flex;align-items:center;gap:7px;}
@@ -781,7 +788,7 @@ footer{background:var(--bg2);border-top:1px solid var(--bl);padding:40px 32px 26
 
 <!-- HERO -->
 <div id="overview" class="hero">
-  <h1 class="hero-h1-anim">Keepin<span style="color:var(--blue);">™</span> knows where<br/>you put that.</h1>
+  <h1 class="hero-h1-anim" style="font-family:'Caveat',cursive;font-size:clamp(52px,7vw,96px);font-weight:700;letter-spacing:0;color:#4a4242;">Let Keepin <span style="color:var(--blue);">AI</span> find it for you</h1>
   <p class="hero-sub hero-sub-anim">Point your camera as you put things away. Ask anything, anytime. Your items — always found.</p>
   <div class="hero-btns hero-btns-anim">
     <a href="#" class="btn btn-primary">Download on iOS</a>
