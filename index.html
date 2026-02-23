@@ -28,7 +28,25 @@ body{background:#fff;color:#1d1d1f;font-family:'Inter',-apple-system,sans-serif;
   border-bottom:1px solid rgba(0,0,0,.1);
 }
 .tn-logo{display:flex;align-items:center;text-decoration:none;margin-right:24px;padding-right:24px;border-right:1px solid var(--border);}
-.tn-logo img{height:22px;width:auto;display:block;}
+.tn-logo img{
+  height:38px;width:auto;display:block;
+  animation:logoPop .6s cubic-bezier(.34,1.56,.64,1) both;
+  transform-origin:top center;
+}
+.tn-logo img:hover{
+  animation:logoBounce .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes logoPop{
+  0%{opacity:0;transform:translateY(-16px) scale(.7);}
+  60%{transform:translateY(4px) scale(1.08);}
+  100%{opacity:1;transform:translateY(0) scale(1);}
+}
+@keyframes logoBounce{
+  0%{transform:scale(1);}
+  40%{transform:scale(1.18) rotate(-4deg);}
+  70%{transform:scale(.94) rotate(2deg);}
+  100%{transform:scale(1) rotate(0deg);}
+}
 .tn-logo-fb{font-size:17px;font-weight:700;color:var(--text);display:none;}
 .tn-links{display:flex;align-items:center;gap:0;flex:1;}
 .tn-plain{font-size:14px;font-weight:400;color:var(--muted);text-decoration:none;padding:0 14px;height:48px;display:flex;align-items:center;transition:color .15s;white-space:nowrap;}
