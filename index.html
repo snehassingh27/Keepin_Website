@@ -638,6 +638,28 @@ footer{background:var(--bg2);border-top:1px solid var(--bl);padding:40px 32px 26
 .who-grid.in .who-card:nth-child(7){transition-delay:.3s;}
 .who-grid.in .who-card:nth-child(8){transition-delay:.34s;}
 
+/* ── HERO GRADIENT OVERRIDE ── */
+.hero{
+  background:linear-gradient(145deg,#f7f0fb 0%,#fef4f2 38%,#fef9f0 70%,#eff4ff 100%) !important;
+  position:relative;overflow:hidden;
+  padding:140px 32px 80px !important;
+}
+.hero::before{
+  content:'';position:absolute;
+  top:-140px;left:-120px;
+  width:560px;height:560px;
+  background:radial-gradient(circle,rgba(201,168,212,.25) 0%,transparent 60%);
+  pointer-events:none;z-index:0;
+}
+.hero::after{
+  content:'';position:absolute;
+  bottom:-100px;right:-100px;
+  width:480px;height:480px;
+  background:radial-gradient(circle,rgba(232,184,106,.2) 0%,transparent 60%);
+  pointer-events:none;z-index:0;
+}
+.hero>*{position:relative;z-index:1;}
+
 @media(max-width:900px){
   .top-nav{padding:0 16px;}.tn-links{display:none;}
   .local-nav{padding:0 16px;}
