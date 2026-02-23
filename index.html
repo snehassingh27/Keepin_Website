@@ -18,17 +18,11 @@ body{background:#fff;color:#1d1d1f;font-family:'Inter',-apple-system,sans-serif;
   --green:#28cd41;--r:12px;
 }
 
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:300;
-  height:80px;display:flex;align-items:center;padding:0 32px;
-  background:rgba(255,255,255,.88);
-  backdrop-filter:saturate(180%) blur(20px);
-  -webkit-backdrop-filter:saturate(180%) blur(20px);
-  border-bottom:1px solid rgba(0,0,0,.1);
-}
+
 .top-nav{
   position:fixed;top:0;left:0;right:0;z-index:300;
-  height:80px;display:flex;align-items:center;padding:0 32px;
+  height:auto;min-height:72px;
+  display:flex;align-items:center;padding:8px 32px;
   background:rgba(255,255,255,.88);
   backdrop-filter:saturate(180%) blur(20px);
   -webkit-backdrop-filter:saturate(180%) blur(20px);
@@ -40,7 +34,8 @@ nav{
   border-right:1px solid var(--border);
 }
 .tn-logo img{
-  height:114px;width:auto;display:block;
+  height:56px;width:auto;display:block;
+  object-fit:contain;
   animation:logoPop .6s cubic-bezier(.34,1.56,.64,1) both;
   transform-origin:top center;
 }
@@ -59,17 +54,7 @@ nav{
   color:var(--muted2);vertical-align:super;
   margin-left:1px;letter-spacing:0;
 }
-@keyframes logoPop{
-  0%{opacity:0;transform:translateY(-16px) scale(.7);}
-  60%{transform:translateY(4px) scale(1.08);}
-  100%{opacity:1;transform:translateY(0) scale(1);}
-}
-@keyframes logoBounce{
-  0%{transform:scale(1);}
-  40%{transform:scale(1.18) rotate(-4deg);}
-  70%{transform:scale(.94) rotate(2deg);}
-  100%{transform:scale(1) rotate(0deg);}
-}
+
 .tn-logo-fb{font-size:17px;font-weight:700;color:var(--text);display:none;}
 .tn-links{display:flex;align-items:center;gap:0;flex:1;}
 .tn-plain{font-size:14px;font-weight:400;color:var(--muted);text-decoration:none;padding:0 14px;height:48px;display:flex;align-items:center;transition:color .15s;white-space:nowrap;}
@@ -604,7 +589,17 @@ footer{background:var(--bg2);border-top:1px solid var(--bl);padding:40px 32px 26
 .ft-col a:hover{color:var(--text);}
 .ft-bottom{padding-top:18px;border-top:1px solid var(--bl);display:flex;justify-content:space-between;font-size:12px;color:var(--muted2);}
 
-/* ── HERO SCROLL ANIMATIONS ── */
+@keyframes logoPop{
+  0%{opacity:0;transform:translateY(-14px) scale(.72);}
+  60%{transform:translateY(3px) scale(1.06);}
+  100%{opacity:1;transform:translateY(0) scale(1);}
+}
+@keyframes logoBounce{
+  0%{transform:scale(1);}
+  40%{transform:scale(1.15) rotate(-3deg);}
+  70%{transform:scale(.96) rotate(2deg);}
+  100%{transform:scale(1) rotate(0);}
+}
 @keyframes heroFadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
 @keyframes heroFadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes screenFloat{0%,100%{transform:translateY(0) rotate(-.3deg)}50%{transform:translateY(-10px) rotate(.3deg)}}
