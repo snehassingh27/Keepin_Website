@@ -5,1094 +5,1508 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Keepin™ – AI That Knows Where You Put That</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{
-  background:#f7f6f3;
-  color:#1a1a18;
-  font-family:'Inter',sans-serif;
-  font-weight:400;
-  line-height:1.6;
-  overflow-x:hidden;
-  -webkit-font-smoothing:antialiased;
-}
+body{background:#fff;color:#1d1d1f;font-family:'Inter',-apple-system,sans-serif;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
 :root{
-  --cream:#f7f6f3;
-  --cream2:#f0ede8;
-  --stone:#e8e4dd;
-  --text:#1a1a18;
-  --muted:#7a7670;
-  --muted2:#b0aca6;
-  --border:rgba(0,0,0,.08);
-  --black:#111110;
-  --white:#ffffff;
+  --text:#1d1d1f;--muted:#6e6e73;--muted2:#aeaeb2;
+  --border:#d2d2d7;--bl:#e8e8ed;
+  --bg:#f5f5f7;--bg2:#fbfbfd;--white:#fff;
+  --blue:#0071e3;--blue2:#0077ed;
+  --green:#28cd41;--r:12px;
 }
 
-/* ── SERIF HEADLINES ── */
-.serif{font-family:'Playfair Display',Georgia,serif;}
-
-/* ── NAV ── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:200;
-  height:56px;padding:0 40px;
-  display:flex;align-items:center;justify-content:space-between;
-  background:rgba(247,246,243,0.75);
-  backdrop-filter:blur(24px) saturate(160%);
-  -webkit-backdrop-filter:blur(24px) saturate(160%);
-  border-bottom:1px solid rgba(0,0,0,.06);
-  transition:background .3s;
+/* ── TOP NAV ── */
+.top-nav{
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  height:48px;display:flex;align-items:center;padding:0 32px;
+  background:rgba(255,255,255,.88);
+  backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid rgba(0,0,0,.1);
 }
-.logo-img{height:28px;width:auto;object-fit:contain;display:block;}
-.logo-fallback{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--text);letter-spacing:-.5px;}
-.logo-fallback span{font-style:italic;}
-.nav-links{display:flex;align-items:center;gap:0;}
+.tn-logo{display:flex;align-items:center;text-decoration:none;margin-right:24px;padding-right:24px;border-right:1px solid var(--border);}
+.tn-logo img{height:22px;width:auto;display:block;}
+.tn-logo-fb{font-size:17px;font-weight:700;color:var(--text);display:none;}
+.tn-links{display:flex;align-items:center;gap:0;flex:1;}
+.tn-plain{font-size:14px;font-weight:400;color:var(--muted);text-decoration:none;padding:0 14px;height:48px;display:flex;align-items:center;transition:color .15s;white-space:nowrap;}
+.tn-plain:hover{color:var(--text);}
+.tn-r{display:flex;gap:8px;align-items:center;margin-left:auto;}
+.btn-nav{font-size:13px;font-weight:500;padding:7px 16px;border-radius:50px;cursor:pointer;text-decoration:none;font-family:'Inter',sans-serif;transition:all .15s;display:inline-flex;align-items:center;}
+.btn-out{background:transparent;border:1px solid var(--border);color:var(--text);}
+.btn-out:hover{border-color:#888;}
+.btn-fill{background:var(--text);border:none;color:#fff;}
+.btn-fill:hover{background:#333;}
+
+/* ── NAV ITEM (dropdown trigger) ── */
 .nav-item{position:relative;}
-.nav-btn{
+.nav-trigger{
   background:none;border:none;
   font-family:'Inter',sans-serif;
-  font-size:13px;font-weight:500;
-  color:var(--muted);cursor:pointer;
-  padding:6px 14px;border-radius:6px;
-  display:flex;align-items:center;gap:4px;
-  transition:color .15s;
-  letter-spacing:.01em;
-}
-.nav-btn:hover,.nav-btn.open{color:var(--text);}
-.nav-btn svg{transition:transform .2s;opacity:.5;}
-.nav-btn.open svg{transform:rotate(180deg);}
-/* MEGA */
-.mega{
-  position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%);
-  background:rgba(247,246,243,0.88);
-  backdrop-filter:blur(32px) saturate(180%);
-  -webkit-backdrop-filter:blur(32px) saturate(180%);
-  border:1px solid rgba(0,0,0,.07);
-  border-radius:16px;
-  box-shadow:0 8px 48px rgba(0,0,0,.10),0 2px 8px rgba(0,0,0,.06);
-  padding:24px;min-width:480px;display:none;z-index:300;
-}
-.mega.open{display:block;animation:dropIn .18s ease;}
-@keyframes dropIn{from{opacity:0;transform:translateX(-50%) translateY(-8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-.mega-label{font-size:10px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
-.mega-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:16px;}
-.mega-item{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:9px;text-decoration:none;transition:background .12s;}
-.mega-item:hover{background:rgba(0,0,0,.04);}
-.mi-icon{width:30px;height:30px;border-radius:7px;background:rgba(0,0,0,.04);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.mi-icon svg{width:15px;height:15px;stroke:var(--muted);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
-.mi-t{font-size:13px;font-weight:500;color:var(--text);}
-.mi-s{font-size:11.5px;color:var(--muted);}
-/* nav right */
-.nav-r{display:flex;gap:8px;align-items:center;}
-.btn{
-  font-family:'Inter',sans-serif;
-  padding:8px 18px;border-radius:50px;
-  font-size:13px;font-weight:500;
-  cursor:pointer;text-decoration:none;
-  transition:all .2s;
-  display:inline-flex;align-items:center;gap:6px;
-  letter-spacing:.01em;
-}
-.btn-ghost{background:transparent;border:1px solid rgba(0,0,0,.14);color:var(--text);}
-.btn-ghost:hover{border-color:rgba(0,0,0,.3);}
-.btn-dark{background:var(--black);border:none;color:#fff;}
-.btn-dark:hover{background:#333;transform:translateY(-1px);}
-.btn-lg{padding:14px 32px;font-size:15px;border-radius:50px;}
-
-/* ── HERO ── */
-.hero{
-  min-height:100vh;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  padding-top:56px;
-  overflow:hidden;
-}
-.hero-left{
-  display:flex;flex-direction:column;justify-content:center;
-  padding:80px 60px 80px 80px;
-}
-.hero-eyebrow{
-  font-size:11px;font-weight:600;color:var(--muted);
-  text-transform:uppercase;letter-spacing:1.5px;
-  margin-bottom:20px;
-}
-.hero h1{
-  font-family:'Playfair Display',serif;
-  font-size:clamp(46px,5.5vw,72px);
-  font-weight:700;
-  line-height:1.05;
-  letter-spacing:-.5px;
+  font-size:14px;font-weight:400;
   color:var(--text);
-  margin-bottom:22px;
+  cursor:pointer;
+  padding:0 14px;height:48px;
+  display:flex;align-items:center;gap:5px;
+  transition:color .15s;
+  white-space:nowrap;
 }
-.hero h1 em{font-style:italic;font-weight:400;}
-.hero-sub{font-size:16px;color:var(--muted);line-height:1.75;max-width:400px;margin-bottom:36px;}
-.hero-btns{display:flex;gap:10px;flex-wrap:wrap;}
-/* Hero right — full bleed image style */
-.hero-right{
-  position:relative;
-  background:var(--cream2);
-  overflow:hidden;
+.nav-trigger:hover{color:var(--muted);}
+.nav-trigger.is-open{font-weight:600;}
+.nav-trigger .chevron{
+  width:10px;height:10px;
+  display:flex;align-items:center;justify-content:center;
+  opacity:.5;transition:transform .2s,opacity .15s;
 }
-.hero-right-inner{
-  position:absolute;inset:0;
-  background:linear-gradient(135deg,#e8e4dd 0%,#ddd8d0 100%);
-  display:flex;flex-direction:column;justify-content:flex-end;
-  padding:40px;
+.nav-trigger.is-open .chevron{transform:rotate(180deg);opacity:.8;}
+
+/* ── MEGA DROPDOWN ── */
+.mega{
+  position:absolute;top:calc(100% + 8px);left:50%;
+  transform:translateX(-50%);
+  background:rgba(250,249,247,.96);
+  backdrop-filter:blur(32px) saturate(200%);
+  -webkit-backdrop-filter:blur(32px) saturate(200%);
+  border:1px solid rgba(0,0,0,.07);
+  border-radius:18px;
+  box-shadow:0 16px 56px rgba(0,0,0,.11),0 2px 8px rgba(0,0,0,.05);
+  padding:24px 22px;
+  min-width:500px;
+  display:none;z-index:400;
 }
-/* Floating app card */
-.app-card{
-  background:rgba(255,255,255,0.72);
-  backdrop-filter:blur(20px) saturate(160%);
-  -webkit-backdrop-filter:blur(20px) saturate(160%);
-  border:1px solid rgba(255,255,255,.8);
-  border-radius:20px;
-  padding:20px;
-  box-shadow:0 8px 40px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.06);
-  max-width:340px;
-  margin-bottom:16px;
-  animation:floatCard 6s ease-in-out infinite;
+.mega.is-open{display:block;animation:dropIn .15s ease;}
+@keyframes dropIn{from{opacity:0;transform:translateX(-50%) translateY(-6px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.mega-section{font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:1px;padding:0 8px;margin-bottom:8px;}
+.mega-section+.mega-section{margin-top:16px;}
+.mega-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.mega-row{
+  display:flex;align-items:flex-start;gap:13px;
+  padding:10px 8px;border-radius:11px;
+  text-decoration:none;cursor:pointer;
+  transition:background .12s;
 }
-@keyframes floatCard{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.app-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
-.app-card-logo{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;font-style:italic;color:var(--text);}
-.app-card-badge{background:#111;color:#fff;border-radius:50px;padding:3px 10px;font-size:10px;font-weight:500;letter-spacing:.5px;}
-.app-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,.06);}
-.app-item:last-child{border-bottom:none;}
-.ai-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.ai-name{font-size:12.5px;font-weight:500;color:var(--text);flex:1;}
-.ai-loc{font-size:11px;color:var(--muted);}
-.ai-tag{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);border-radius:4px;padding:2px 7px;font-size:9.5px;font-weight:600;color:#16a34a;}
-/* Quote overlay */
-.hero-quote{
-  background:rgba(247,246,243,0.78);
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
-  border:1px solid rgba(255,255,255,.7);
-  border-radius:14px;
-  padding:20px 22px;
-  box-shadow:0 4px 24px rgba(0,0,0,.08);
+.mega-row:hover{background:rgba(0,0,0,.04);}
+.mega-ic{
+  width:36px;height:36px;flex-shrink:0;
+  border-radius:9px;background:#eeecea;
+  display:flex;align-items:center;justify-content:center;
+  margin-top:1px;
 }
-.hq-text{font-family:'Playfair Display',serif;font-size:14px;font-style:italic;color:var(--text);line-height:1.65;margin-bottom:12px;}
-.hq-author{font-size:12px;font-weight:500;color:var(--muted);}
-.hq-stars{display:flex;gap:2px;margin-top:4px;}
-.hq-stars svg{width:12px;height:12px;fill:var(--muted2);stroke:none;}
+.mega-ic svg{width:17px;height:17px;stroke:#555;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.mega-title{font-size:14px;font-weight:600;color:#1d1d1f;line-height:1.2;margin-bottom:3px;}
+.mega-sub{font-size:12px;color:#888;line-height:1.4;}
+
+/* ── LAYOUT ── */
+.page-wrap{display:flex;max-width:1100px;margin:0 auto;padding:0 48px;}
+.main{flex:1;padding:0 0 120px;min-width:0;}
+
+/* ── HERO BANNER ── */
+.hero{
+  background:linear-gradient(180deg,#fbfbfd 0%,#f5f5f7 100%);
+  padding:80px 32px 60px;text-align:center;
+  border-bottom:1px solid rgba(0,0,0,.06);
+}
+.hero h1{font-size:clamp(36px,5.5vw,60px);font-weight:700;letter-spacing:-.5px;line-height:1.05;color:var(--text);max-width:680px;margin:0 auto 16px;}
+.hero-sub{font-size:18px;color:var(--muted);max-width:460px;margin:0 auto 32px;font-weight:300;line-height:1.65;}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn{font-size:15px;font-weight:500;padding:12px 26px;border-radius:50px;cursor:pointer;text-decoration:none;font-family:'Inter',sans-serif;transition:all .2s;display:inline-flex;align-items:center;gap:7px;}
+.btn-primary{background:var(--text);border:none;color:#fff;}
+.btn-primary:hover{background:#333;transform:translateY(-1px);}
+.btn-secondary{background:var(--white);border:1px solid var(--border);color:var(--text);}
+.btn-secondary:hover{border-color:#888;}
+.hero-note{font-size:12px;color:var(--muted2);margin-top:14px;}
+
+/* ── APP PREVIEW (hero) ── */
+.app-preview{max-width:840px;margin:48px auto 0;background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 20px 80px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.05);}
+.ap-bar{height:36px;background:#f5f5f7;border-bottom:1px solid rgba(0,0,0,.06);display:flex;align-items:center;padding:0 14px;gap:7px;}
+.ap-dot{width:10px;height:10px;border-radius:50%;}
+.ap-url{margin-left:10px;flex:1;max-width:200px;background:var(--white);border-radius:6px;height:20px;font-size:11px;color:var(--muted2);display:flex;align-items:center;padding:0 8px;border:1px solid rgba(0,0,0,.07);}
+.ap-body{display:grid;grid-template-columns:190px 1fr 250px;min-height:380px;}
+.ap-sb{background:#fafafa;border-right:1px solid rgba(0,0,0,.06);padding:14px 10px;}
+.ap-sb-logo{font-size:13px;font-weight:700;color:var(--text);margin-bottom:16px;padding:0 6px;}
+.ap-sb-lbl{font-size:9px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.7px;padding:0 6px;margin:10px 0 5px;}
+.ap-sb-r{display:flex;align-items:center;gap:8px;padding:6px;border-radius:7px;font-size:12px;color:var(--muted);margin-bottom:1px;cursor:pointer;}
+.ap-sb-r.on{background:var(--bg);color:var(--text);font-weight:500;}
+.ap-sb-r svg{width:13px;height:13px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
+.ap-sb-stat{background:var(--bg);border-radius:8px;padding:10px;margin-top:14px;}
+.ass-l{font-size:10px;color:var(--muted2);}
+.ass-v{font-size:17px;font-weight:700;color:var(--text);}
+.ass-s{font-size:10px;color:var(--green);font-weight:600;margin-top:1px;}
+.ap-main{padding:14px 16px;background:var(--bg2);}
+.ap-search{display:flex;align-items:center;gap:7px;background:var(--white);border:1px solid rgba(0,0,0,.08);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--muted2);margin-bottom:12px;}
+.ap-search svg{width:12px;height:12px;fill:none;stroke:var(--muted2);stroke-width:2;}
+.ap-sl{font-size:10px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:7px;}
+.ap-item{background:var(--white);border:1px solid rgba(0,0,0,.07);border-radius:9px;padding:9px 12px;display:flex;align-items:center;gap:10px;margin-bottom:5px;box-shadow:0 1px 4px rgba(0,0,0,.03);}
+.ap-ii{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ap-ii svg{width:14px;height:14px;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.ap-in{font-size:12px;font-weight:500;color:var(--text);}
+.ap-il{font-size:10.5px;color:var(--muted);}
+.ap-tag{margin-left:auto;border-radius:4px;padding:2px 7px;font-size:9px;font-weight:600;white-space:nowrap;}
+.ap-tag.found{background:rgba(40,205,65,.1);border:1px solid rgba(40,205,65,.2);color:#1a9632;}
+.ap-tag.check{background:rgba(255,59,48,.08);border:1px solid rgba(255,59,48,.2);color:#c92d20;}
+.ap-chat{background:var(--white);border-left:1px solid rgba(0,0,0,.06);display:flex;flex-direction:column;padding:14px;}
+.ap-chat-t{font-size:10px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;}
+.cm{margin-bottom:7px;}
+.cm.u{display:flex;justify-content:flex-end;}
+.bub{padding:8px 11px;border-radius:11px;font-size:11.5px;line-height:1.55;max-width:175px;}
+.bub-ai{background:var(--bg);color:var(--text);border-radius:11px 11px 11px 3px;border:1px solid rgba(0,0,0,.06);}
+.bub-u{background:var(--text);color:#fff;border-radius:11px 11px 3px 11px;}
+.typing{display:flex;gap:3px;padding:7px 11px;background:var(--bg);border-radius:11px;width:fit-content;margin-bottom:7px;}
+.td{width:5px;height:5px;border-radius:50%;background:var(--muted2);animation:td 1.2s infinite;}
+.td:nth-child(2){animation-delay:.2s;}.td:nth-child(3){animation-delay:.4s;}
+@keyframes td{0%,80%,100%{opacity:.3;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+.chat-inp{margin-top:auto;background:var(--bg);border:1px solid rgba(0,0,0,.07);border-radius:8px;padding:8px 10px;display:flex;align-items:center;justify-content:space-between;font-size:11.5px;color:var(--muted2);}
+.send-b{width:22px;height:22px;background:var(--text);border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.send-b svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;}
 
 /* ── SCROLL STRIP ── */
 .strip{
-  overflow:hidden;padding:20px 0;
-  background:var(--black);
-  border-top:1px solid rgba(255,255,255,.06);
+  overflow:hidden;padding:0;
+  background:rgba(18,18,22,0.82);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border-top:1px solid rgba(255,255,255,.07);
+  border-bottom:1px solid rgba(255,255,255,.05);
+  position:relative;
 }
-.strip-inner{display:flex;gap:0;width:max-content;animation:marquee 32s linear infinite;}
+/* soft fade edges */
+.strip::before,.strip::after{
+  content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;pointer-events:none;
+}
+.strip::before{left:0;background:linear-gradient(to right,rgba(18,18,22,.85) 0%,transparent 100%);}
+.strip::after{right:0;background:linear-gradient(to left,rgba(18,18,22,.85) 0%,transparent 100%);}
+.strip-inner{display:flex;width:max-content;animation:scroll 38s linear infinite;padding:14px 0;}
 .strip-inner:hover{animation-play-state:paused;}
-@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.si{font-size:12px;font-weight:400;color:rgba(255,255,255,.35);padding:0 28px;border-right:1px solid rgba(255,255,255,.08);white-space:nowrap;letter-spacing:.02em;}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.si{
+  font-size:12.5px;font-weight:500;
+  color:rgba(255,255,255,.72);
+  padding:0 28px;
+  border-right:1px solid rgba(255,255,255,.1);
+  white-space:nowrap;
+  letter-spacing:.01em;
+  display:flex;align-items:center;gap:7px;
+}
+.si::before{
+  content:'';width:5px;height:5px;border-radius:50%;
+  background:rgba(255,255,255,.3);flex-shrink:0;
+}
+
+/* ── SECTION BLOCKS ── */
+section.block{padding:60px 0;border-bottom:1px solid rgba(0,0,0,.06);}
+section.block:last-child{border-bottom:none;}
+.eyebrow{font-size:12px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;display:block;}
+.sec-h{font-size:clamp(24px,3vw,38px);font-weight:700;letter-spacing:-.4px;line-height:1.08;color:var(--text);margin-bottom:12px;}
+.sec-sub{font-size:15px;color:var(--muted);line-height:1.78;margin-bottom:32px;max-width:500px;}
+
+/* ── TRY APP SECTION ── */
+.try-section{background:var(--bg2);border:1px solid var(--bl);border-radius:20px;padding:40px;margin-top:0;}
+.try-header{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;margin-bottom:36px;}
+.try-phone-wrap{display:flex;justify-content:center;}
+
+/* ── PHONE SHELL ── */
+.phone-shell{
+  width:330px;height:680px;
+  background:#f5f0ee;
+  border-radius:44px;
+  border:1px solid rgba(0,0,0,.1);
+  overflow:hidden;
+  box-shadow:0 24px 80px rgba(0,0,0,.12),0 4px 16px rgba(0,0,0,.08),0 0 0 6px rgba(255,255,255,.5);
+  position:relative;
+  flex-shrink:0;
+}
+.phone-status{
+  background:linear-gradient(135deg,#f7f0fb,#fef4f2,#fef9f0);
+  padding:10px 24px 0;
+  display:flex;justify-content:space-between;
+  font-size:11px;font-weight:600;color:#2d2230;
+  font-family:'Inter',sans-serif;
+}
+.phone-inner{height:calc(100% - 32px);overflow:hidden;display:flex;flex-direction:column;}
+.phone-screen{flex:1;overflow-y:auto;scrollbar-width:none;}
+.phone-screen::-webkit-scrollbar{display:none;}
+.phone-nav-bar{
+  background:#fff;
+  border-top:1px solid #ede5e8;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  padding:8px 0 16px;
+  flex-shrink:0;
+}
+.pnav-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;padding:0;}
+.pnav-btn svg{width:19px;height:19px;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.pnav-lbl{font-size:9.5px;font-family:'Inter',sans-serif;}
+
+/* ── APP BRAND COLORS ── */
+:root{
+  --brand:#e8645a;--brand-bg:#fdf0ef;
+  --lav:#c9a8d4;--lav-bg:#f7f0fb;
+  --peach:#f0a090;--peach-bg:#fef4f2;
+  --gold:#e8b86a;--gold-bg:#fef9f0;
+  --app-ink:#2d2230;--app-muted:#7a6070;--app-muted2:#b8a8b0;
+  --app-border:#ede5e8;--app-bg:#fefcfb;--app-surf:#fff;
+  --app-surf2:#fbf7f6;
+  --app-green:#5a8f72;--app-green-bg:#eff7f3;
+  --app-grad:linear-gradient(135deg,#f7f0fb 0%,#fef4f2 50%,#fef9f0 100%);
+}
+
+/* ── APP SCREENS ── */
+.app-screen{display:none;height:100%;flex-direction:column;}
+.app-screen.visible{display:flex;}
+
+/* ── CHAT PANEL (hero dashboard) ── */
+.ap-chat{background:var(--white);border-left:1px solid rgba(0,0,0,.06);display:flex;flex-direction:column;padding:16px 14px 12px;}
+.ap-chat-t{font-size:9.5px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.9px;margin-bottom:12px;text-align:center;}
+.cm{margin-bottom:6px;display:flex;}
+.cm.ai{justify-content:flex-start;}
+.cm.u{justify-content:flex-end;}
+.bub{padding:9px 13px;border-radius:16px;font-size:11.5px;line-height:1.5;max-width:175px;word-break:break-word;}
+.bub-ai{background:#f2f2f2;color:#1d1d1f;border-radius:16px 16px 16px 4px;}
+.bub-u{background:#1d1d1f;color:#fff;border-radius:16px 16px 4px 16px;}
+.typing-row{display:flex;justify-content:flex-start;margin-bottom:6px;}
+.typing{display:inline-flex;gap:4px;padding:9px 14px;background:#f2f2f2;border-radius:16px 16px 16px 4px;align-items:center;}
+.td{width:5px;height:5px;border-radius:50%;background:#aaa;animation:td 1.2s infinite;}
+.td:nth-child(2){animation-delay:.2s;}.td:nth-child(3){animation-delay:.4s;}
+@keyframes td{0%,80%,100%{opacity:.35;transform:scale(.75)}40%{opacity:1;transform:scale(1)}}
+.chat-inp{margin-top:auto;background:#f5f5f5;border:none;border-radius:10px;padding:8px 10px;display:flex;align-items:center;justify-content:space-between;font-size:11.5px;color:#aaa;}
+.send-b{width:22px;height:22px;background:#1d1d1f;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.send-b svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;}
+
+/* ── RECENTLY LOCATED CARDS (hero dashboard) ── */
+.ap-item{
+  background:#fff;
+  border:1px solid #f0f0f0;
+  border-radius:14px;
+  padding:11px 13px;
+  display:flex;align-items:center;gap:11px;
+  margin-bottom:7px;
+  box-shadow:0 1px 4px rgba(0,0,0,.05),0 0 0 0 transparent;
+  transition:box-shadow .18s,transform .18s;
+  cursor:default;
+}
+.ap-item:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-1px);}
+.ap-ii{
+  width:34px;height:34px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.ap-ii svg{width:16px;height:16px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.ap-item-body{flex:1;min-width:0;}
+.ap-in{font-size:13px;font-weight:600;color:#1a1a1f;line-height:1.2;}
+.ap-il{font-size:10.5px;color:#aeaeb2;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ap-tag{
+  flex-shrink:0;
+  border-radius:6px;padding:3px 9px;
+  font-size:10px;font-weight:700;
+  white-space:nowrap;border:1px solid;
+  letter-spacing:.1px;
+}
+.ap-tag.found{background:#f0fdf4;border-color:#bbf7d0;color:#15803d;}
+.ap-tag.check{background:#fff1f2;border-color:#fecdd3;color:#be123c;}
+/* section label row */
+.ap-sl-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
+.ap-sl{font-size:10px;font-weight:700;color:#aeaeb2;text-transform:uppercase;letter-spacing:.9px;}
+.ap-sl-link{font-size:10.5px;color:#0071e3;font-weight:500;cursor:pointer;background:none;border:none;padding:0;font-family:inherit;}
+
+/* onboarding */
+.ob-wrap{
+  height:100%;display:flex;flex-direction:column;
+  background:linear-gradient(135deg,#f7f0fb,#fef4f2);
+  transition:background .4s;
+}
+.ob-dots{display:flex;gap:5px;padding:20px 22px 0;justify-content:center;}
+.ob-dot{height:3px;border-radius:3px;transition:all .3s;}
+.ob-dot.on{background:var(--brand);}
+.ob-dot.off{background:rgba(232,100,90,.25);}
+.ob-skip{text-align:right;padding:8px 22px 0;background:none;border:none;color:var(--app-muted2);font-size:12px;cursor:pointer;font-family:'Inter',sans-serif;display:block;width:100%;}
+.ob-icon-wrap{flex:1;display:flex;align-items:center;justify-content:center;}
+.ob-icon{width:96px;height:96px;background:rgba(255,255,255,.7);border-radius:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(232,100,90,.12);}
+.ob-icon svg{width:42px;height:42px;fill:none;stroke:var(--brand);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;}
+.ob-copy{padding:0 28px 44px;}
+.ob-title{font-weight:800;font-size:22px;color:var(--app-ink);line-height:1.25;letter-spacing:-.5px;margin-bottom:12px;white-space:pre-line;font-family:'Inter',sans-serif;}
+.ob-body{color:var(--app-muted);font-size:13.5px;line-height:1.7;margin-bottom:28px;font-family:'Inter',sans-serif;}
+.app-btn-primary{background:var(--brand);color:#fff;border:none;border-radius:13px;padding:13px 20px;font-weight:600;font-size:14px;cursor:pointer;width:100%;font-family:'Inter',sans-serif;letter-spacing:-.1px;}
+.app-btn-ghost{background:transparent;color:var(--app-muted);border:1.5px solid var(--app-border);border-radius:13px;padding:12px 20px;font-weight:600;font-size:13px;cursor:pointer;width:100%;font-family:'Inter',sans-serif;margin-top:10px;}
+
+/* home screen */
+.app-home{padding:0 18px 20px;font-family:'Inter',sans-serif;}
+.app-grad-strip{background:var(--app-grad);margin:0 -18px;padding:20px 18px 18px;}
+.app-greeting-sm{font-size:11px;color:var(--app-muted2);margin-bottom:2px;}
+.app-greeting-name{font-weight:800;font-size:24px;color:var(--app-ink);letter-spacing:-.5px;}
+.app-search-row{background:var(--app-surf);border:1px solid var(--app-border);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin:16px 0 14px;cursor:pointer;}
+.app-search-row svg{width:14px;height:14px;fill:none;stroke:var(--app-muted2);stroke-width:2;}
+.app-search-placeholder{color:var(--app-muted2);font-size:13px;}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:16px;}
+.stat-tile{background:var(--app-surf);border:1px solid var(--app-border);border-radius:12px;padding:11px 6px;text-align:center;}
+.stat-v{font-weight:800;font-size:19px;color:var(--app-ink);}
+.stat-l{font-size:10px;color:var(--app-muted2);margin-top:1px;}
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px;}
+.action-card{border-radius:16px;padding:18px 14px;text-align:left;border:1px solid;cursor:pointer;}
+.action-card-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;background:rgba(255,255,255,.8);}
+.action-card-icon svg{width:18px;height:18px;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
+.action-card-title{font-weight:700;font-size:14px;color:var(--app-ink);}
+.action-card-sub{font-size:11px;color:var(--app-muted);margin-top:3px;line-height:1.35;}
+.section-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
+.section-row-title{font-weight:600;font-size:13px;color:var(--app-ink);}
+.section-row-link{background:none;border:none;color:var(--brand);font-size:11.5px;cursor:pointer;font-family:'Inter',sans-serif;}
+.item-tile{background:var(--app-surf);border:1px solid var(--app-border);border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:10px;margin-bottom:7px;cursor:pointer;}
+.item-tile-ic{width:36px;height:36px;background:var(--brand-bg);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.item-tile-ic svg{width:15px;height:15px;fill:none;stroke:var(--brand);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
+.item-tile-name{font-size:13px;font-weight:600;color:var(--app-ink);}
+.item-tile-loc{font-size:11px;color:var(--app-muted2);margin-top:1px;}
+.cta-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+.cta-tile{border-radius:14px;padding:13px 12px;cursor:pointer;text-align:left;border:1px solid;}
+.cta-tile-ic svg{width:17px;height:17px;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.cta-tile-title{font-weight:600;font-size:12.5px;color:var(--app-ink);margin-top:7px;}
+.cta-tile-sub{font-size:10.5px;color:var(--app-muted2);margin-top:2px;}
+
+/* search screen */
+.app-search-screen{padding:0 18px 20px;font-family:'Inter',sans-serif;}
+.search-input-wrap{display:flex;align-items:center;background:var(--app-surf);border:1.5px solid var(--app-border);border-radius:12px;padding:0 13px;gap:8px;margin:14px 0 16px;transition:border-color .2s;}
+.search-input-wrap svg{width:14px;height:14px;fill:none;stroke:var(--app-muted2);stroke-width:2;flex-shrink:0;}
+.search-input-wrap input{flex:1;border:none;background:transparent;font-size:13.5px;outline:none;font-family:'Inter',sans-serif;color:var(--app-ink);padding:11px 0;}
+.search-result{background:var(--app-surf);border:1px solid var(--app-border);border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.smart-card{background:var(--lav-bg);border:1px solid #ddd0e8;border-radius:16px;padding:16px;}
+.smart-card-title{font-size:13.5px;font-weight:600;color:var(--lav);margin-bottom:5px;}
+.smart-card-sub{font-size:12px;color:var(--app-muted);line-height:1.55;margin-bottom:12px;}
+.occasion-chips{display:flex;flex-wrap:wrap;gap:7px;}
+.occ-chip{background:var(--app-surf);border:1px solid #ddd0e8;color:var(--lav);border-radius:18px;padding:6px 12px;font-size:11.5px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;}
+
+/* profile screen */
+.app-profile{font-family:'Inter',sans-serif;}
+.profile-header{background:var(--app-grad);padding:24px 20px 20px;}
+.profile-avatar-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.profile-av{width:50px;height:50px;background:rgba(255,255,255,.75);border-radius:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(232,100,90,.12);}
+.profile-av svg{width:23px;height:23px;fill:none;stroke:var(--brand);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
+.profile-name{font-weight:800;font-size:18px;color:var(--app-ink);}
+.profile-email{font-size:12px;color:var(--app-muted2);margin-top:2px;}
+.upgrade-btn{width:100%;background:var(--brand);color:#fff;border:none;border-radius:11px;padding:10px;font-weight:600;font-size:13.5px;cursor:pointer;font-family:'Inter',sans-serif;}
+.profile-body{padding:8px 18px 0;}
+.profile-item{background:transparent;border:none;border-bottom:1px solid var(--app-border);padding:12px 0;width:100%;display:flex;align-items:center;gap:11px;cursor:pointer;}
+.profile-item-ic{width:32px;height:32px;background:var(--app-surf2);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.profile-item-ic svg{width:14px;height:14px;fill:none;stroke:var(--app-muted);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
+.profile-item-title{font-size:13.5px;font-weight:600;color:var(--app-ink);text-align:left;}
+.profile-item-sub{font-size:11px;color:var(--app-muted2);margin-top:1px;text-align:left;}
+.chev-ic{width:13px;height:13px;fill:none;stroke:var(--app-muted2);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;margin-left:auto;flex-shrink:0;}
+
+/* redeem screen */
+.redeem-screen{padding:0 18px 20px;font-family:'Inter',sans-serif;}
+.redeem-card{background:var(--app-surf2);border-radius:18px;padding:22px 18px;text-align:center;margin:14px 0 20px;}
+.redeem-card-ic{width:48px;height:48px;background:var(--app-surf);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;box-shadow:0 2px 12px rgba(232,100,90,.1);}
+.redeem-card-ic svg{width:22px;height:22px;fill:none;stroke:var(--brand);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.code-input{width:100%;border:1.5px solid var(--app-border);border-radius:12px;padding:13px 15px;font-size:15px;outline:none;font-family:'Inter',sans-serif;color:var(--app-ink);background:var(--app-bg);letter-spacing:1.5px;margin-bottom:8px;}
+.code-input:focus{border-color:var(--brand);}
+.success-screen{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px 28px;text-align:center;background:var(--app-grad);}
+.success-ic{width:64px;height:64px;background:var(--app-green-bg);border-radius:20px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;}
+.success-ic svg{width:28px;height:28px;fill:none;stroke:var(--app-green);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+
+/* screen label */
+.screen-lbl-sm{font-size:10px;font-weight:700;color:var(--app-muted2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:9px;font-family:'Inter',sans-serif;}
+/* back btn */
+.back-btn{background:rgba(255,255,255,.7);border:none;border-radius:9px;padding:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.back-btn svg{width:15px;height:15px;fill:none;stroke:var(--app-ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.screen-nav-row{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+.screen-nav-title{font-weight:700;font-size:16px;color:var(--app-ink);}
 
 /* ── SECTIONS ── */
-section{padding:100px 80px;}
-.container{max-width:1080px;margin:0 auto;}
-.sec-tag{
-  display:inline-block;
-  font-size:10.5px;font-weight:600;color:var(--muted);
-  text-transform:uppercase;letter-spacing:1.2px;
-  margin-bottom:16px;
-}
-.sec-h{
-  font-family:'Playfair Display',serif;
-  font-size:clamp(30px,3.5vw,50px);
-  font-weight:700;
-  letter-spacing:-.5px;
-  line-height:1.1;
-  color:var(--text);
-}
-.sec-h em{font-style:italic;font-weight:400;}
-.sec-sub{font-size:16px;color:var(--muted);line-height:1.75;max-width:520px;margin-top:14px;}
-hr.div{border:none;border-top:1px solid var(--border);margin:0;}
-
-/* ── STATS ── */
-.stats-banner{
-  background:var(--white);
-  border:1px solid var(--border);
-  border-radius:20px;
-  overflow:hidden;
-  box-shadow:0 2px 20px rgba(0,0,0,.05);
-  margin-top:52px;
-}
-.stats-top{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border);}
-.stats-left{padding:44px;border-right:1px solid var(--border);}
-.stats-left h2{font-family:'Playfair Display',serif;font-size:clamp(24px,3vw,36px);font-weight:700;letter-spacing:-.3px;line-height:1.1;}
-.stats-right{padding:44px;display:flex;flex-direction:column;justify-content:center;}
-.stats-right p{font-size:15px;color:var(--muted);line-height:1.8;}
-.stat-grid{display:grid;grid-template-columns:repeat(5,1fr);}
-.stat-box{padding:28px 20px;text-align:center;border-right:1px solid var(--border);}
-.stat-box:last-child{border-right:none;}
-.stat-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--text);line-height:1;}
-.stat-box p{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5;}
-
-/* ── HOW IT WORKS ── */
-.hw-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
-.hw-steps{display:flex;flex-direction:column;}
-.hw-step{padding:20px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all .2s;}
-.hw-step:last-child{border-bottom:none;}
-.hw-step-head{display:flex;align-items:center;gap:14px;}
-.hw-num{
-  width:26px;height:26px;border-radius:50%;
-  background:transparent;border:1px solid var(--border);
-  font-size:11px;font-weight:600;color:var(--muted);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  transition:all .25s;font-family:'Playfair Display',serif;
-}
-.hw-step.active .hw-num{background:var(--black);color:#fff;border-color:var(--black);}
-.hw-step h3{font-size:15px;font-weight:500;color:var(--text);}
-.hw-step.active h3{font-weight:600;}
-.hw-step p{font-size:13.5px;color:var(--muted);margin-top:10px;padding-left:40px;line-height:1.8;display:none;}
-.hw-step.active p{display:block;}
-/* Mockup */
-.hw-visual{position:sticky;top:80px;}
-.mock-shell{
-  border-radius:28px;
-  overflow:hidden;
-  border:1px solid rgba(0,0,0,.1);
-  box-shadow:
-    0 30px 80px rgba(0,0,0,.1),
-    0 0 0 1px rgba(255,255,255,.5) inset;
-  background:rgba(247,246,243,0.85);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  max-width:290px;margin:0 auto;
-}
-.mock-bar{height:36px;background:rgba(240,237,232,0.9);display:flex;align-items:center;padding:0 14px;gap:6px;border-bottom:1px solid rgba(0,0,0,.06);}
-.mock-dot{width:10px;height:10px;border-radius:50%;}
-.mock-body{padding:16px 14px 22px;}
-.mock-logo{font-family:'Playfair Display',serif;font-size:13px;font-style:italic;font-weight:700;color:var(--text);margin-bottom:12px;}
-.mock-search{
-  background:rgba(255,255,255,.7);
-  backdrop-filter:blur(8px);
-  border:1px solid rgba(0,0,0,.08);
-  border-radius:50px;padding:8px 14px;
-  font-size:12px;color:var(--muted);
-  margin-bottom:12px;display:flex;align-items:center;gap:7px;
-}
-.mock-search svg{width:12px;height:12px;stroke:var(--muted2);fill:none;stroke-width:2;}
-.mock-item{
-  background:rgba(255,255,255,.65);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
-  border:1px solid rgba(255,255,255,.9);
-  border-radius:10px;padding:10px 12px;margin-bottom:7px;
-  display:flex;align-items:center;gap:9px;
-  box-shadow:0 2px 12px rgba(0,0,0,.04);
-}
-.mi-box{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.mi-box svg{width:13px;height:13px;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
-.mock-item-name{font-size:12px;font-weight:500;color:var(--text);}
-.mock-item-loc{font-size:10px;color:var(--muted);margin-top:1px;}
-.mock-fp{margin-left:auto;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:4px;padding:2px 6px;font-size:9px;font-weight:600;color:#15803d;}
-.mock-ai{
-  background:rgba(255,255,255,.55);
-  backdrop-filter:blur(8px);
-  border:1px solid rgba(255,255,255,.8);
-  border-radius:12px;padding:11px;margin-top:10px;
-}
-.mock-q{background:var(--black);border-radius:7px 7px 7px 2px;padding:7px 10px;font-size:11px;color:#fff;margin-bottom:6px;}
-.mock-a{background:rgba(247,246,243,0.9);border:1px solid rgba(0,0,0,.07);border-radius:7px 7px 2px 7px;padding:7px 10px;font-size:11px;color:var(--text);}
-
-/* ── FEATURES ── */
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-radius:16px;overflow:hidden;border:1px solid var(--border);margin-top:52px;}
-.feat-cell{background:var(--white);padding:32px 28px;transition:background .2s;}
-.feat-cell:hover{background:#fdfcfb;}
-.feat-cell.span2{grid-column:span 2;}
-.fc-icon{
-  width:36px;height:36px;border-radius:9px;
-  background:var(--cream2);
-  display:flex;align-items:center;justify-content:center;margin-bottom:16px;
-}
-.fc-icon svg{width:17px;height:17px;fill:none;stroke:var(--text);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
-.feat-cell h3{font-size:15px;font-weight:600;margin-bottom:8px;color:var(--text);}
-.feat-cell p{font-size:13.5px;color:var(--muted);line-height:1.8;}
-
-/* ── COMPARISON ── */
-.cmp-wrap{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:40px;box-shadow:0 2px 20px rgba(0,0,0,.04);margin-top:48px;}
-.spd-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px;}
-.spd-card{background:var(--cream);border-radius:12px;padding:22px;}
-.spd-label{font-size:10.5px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:.7px;margin-bottom:14px;}
-.spd-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-.spd-name{font-size:12px;font-weight:500;width:60px;flex-shrink:0;color:var(--muted);}
-.spd-name.k{color:var(--text);font-weight:600;}
-.spd-bar{height:5px;border-radius:50px;flex:1;background:var(--stone);}
-.spd-fill{height:5px;border-radius:50px;background:var(--black);}
-.spd-t{font-size:11px;color:var(--muted);white-space:nowrap;}
-.cmp-table{width:100%;border-collapse:collapse;}
-.cmp-table th,.cmp-table td{padding:13px 16px;font-size:13px;text-align:left;border-bottom:1px solid var(--border);}
-.cmp-table th{font-size:10.5px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--border);}
-.cmp-table tr:last-child td{border-bottom:none;}
-.cmp-table tr:hover td{background:#fafaf8;}
-.col-k{font-weight:600;color:var(--text);text-align:center;}
-.col-o{color:var(--muted2);text-align:center;}
-.ck{color:#15803d;}
-.cx{color:#d1d5db;}
-
-/* ── B2B ── */
-.b2b-shell{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:48px;box-shadow:0 2px 20px rgba(0,0,0,.04);}
-.b2b-tabs{display:flex;gap:6px;margin-top:28px;flex-wrap:wrap;}
-.tb{
-  padding:7px 16px;border-radius:50px;
-  border:1px solid var(--border);background:transparent;
-  color:var(--muted);font-size:12.5px;font-weight:500;
-  cursor:pointer;font-family:'Inter',sans-serif;
-  transition:all .15s;letter-spacing:.01em;
-}
-.tb.active,.tb:hover{background:var(--black);color:#fff;border-color:var(--black);}
-.b2b-panel{display:none;margin-top:36px;}
-.b2b-panel.active{display:grid;grid-template-columns:1fr 1fr;gap:48px;animation:fi .3s ease;}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bl);border:1px solid var(--bl);border-radius:14px;overflow:hidden;margin-top:28px;}
+.step-cell{background:var(--white);padding:26px 20px;}
+.step-num{font-size:12px;font-weight:600;color:var(--blue);margin-bottom:10px;}
+.step-icon{width:38px;height:38px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
+.step-icon svg{width:19px;height:19px;fill:none;stroke:var(--text);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.step-cell h3{font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px;}
+.step-cell p{font-size:13px;color:var(--muted);line-height:1.7;}
+.feat-list{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--bl);border:1px solid var(--bl);border-radius:14px;overflow:hidden;margin-top:28px;}
+.feat-item{background:var(--white);padding:28px;transition:background .15s;}
+.feat-item:hover{background:var(--bg2);}
+.feat-item:nth-child(2n){border-right:none;}
+.feat-item:nth-last-child(-n+2){border-bottom:none;}
+.fi-icon{width:32px;height:32px;border-radius:8px;background:var(--bg);display:flex;align-items:center;justify-content:center;margin-bottom:11px;}
+.fi-icon svg{width:15px;height:15px;fill:none;stroke:var(--text);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.feat-item h3{font-size:14px;font-weight:600;color:var(--text);margin-bottom:5px;}
+.feat-item p{font-size:13px;color:var(--muted);line-height:1.75;}
+.b2b-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px;}
+.ttab{font-size:13px;font-weight:500;color:var(--muted);padding:7px 16px;border-radius:8px;border:1px solid var(--bl);background:var(--white);cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
+.ttab.active,.ttab:hover{background:var(--bg);color:var(--text);border-color:var(--border);}
+.ttab.active{border-color:var(--blue);color:var(--blue);}
+.b2b-panel{display:none;}
+.b2b-panel.active{display:grid;grid-template-columns:1fr 1fr;gap:36px;animation:fi .25s ease;}
 @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.b2b-panel h3{font-family:'Playfair Display',serif;font-size:clamp(20px,2.5vw,28px);font-weight:700;letter-spacing:-.3px;margin-bottom:12px;}
-.b2b-panel>div>p{font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:20px;}
-.b2b-list{list-style:none;}
-.b2b-list li{padding:9px 0;border-bottom:1px solid var(--border);font-size:13.5px;color:var(--muted);display:flex;align-items:flex-start;gap:10px;}
-.b2b-list li svg{width:14px;height:14px;flex-shrink:0;margin-top:2px;stroke:var(--text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-.b2b-vis{background:var(--cream);border:1px solid var(--border);border-radius:14px;padding:24px;}
-.b2b-m{
-  background:var(--white);
-  backdrop-filter:blur(8px);
-  border:1px solid var(--border);border-radius:10px;
-  padding:14px 18px;margin-bottom:10px;
-  box-shadow:0 1px 6px rgba(0,0,0,.03);
-}
+.b2b-panel h3{font-size:20px;font-weight:700;letter-spacing:-.3px;color:var(--text);margin-bottom:8px;}
+.b2b-panel>div>p{font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:16px;}
+.b2b-check{list-style:none;}
+.b2b-check li{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:var(--muted);padding:8px 0;border-bottom:1px solid var(--bl);}
+.b2b-check li svg{width:13px;height:13px;flex-shrink:0;margin-top:3px;stroke:var(--text);fill:none;stroke-width:2.2;stroke-linecap:round;}
+.b2b-vis{background:var(--bg2);border:1px solid var(--bl);border-radius:12px;padding:20px;}
+.b2b-m{background:var(--white);border:1px solid var(--bl);border-radius:9px;padding:12px 15px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,.04);}
 .b2b-m .ml{font-size:11px;color:var(--muted);}
-.b2b-m .mv{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--text);}
-.b2b-q{margin-top:14px;font-size:12.5px;color:var(--muted);font-style:italic;line-height:1.7;padding-left:12px;border-left:2px solid var(--stone);}
-
-/* ── WHO ── */
-.who-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:44px;}
-.who-card{
-  background:var(--white);
-  border:1px solid var(--border);border-radius:14px;
-  padding:22px 18px;
-  transition:box-shadow .25s,transform .25s,background .2s;
-}
-.who-card:hover{box-shadow:0 8px 32px rgba(0,0,0,.08);transform:translateY(-2px);}
-.who-card.hl{background:var(--black);border-color:var(--black);}
-.who-card.hl h3,.who-card.hl p{color:rgba(255,255,255,.9);}
-.who-card.hl p{color:rgba(255,255,255,.5);}
-.wc-icon{width:34px;height:34px;border-radius:8px;background:var(--cream2);display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
-.who-card.hl .wc-icon{background:rgba(255,255,255,.12);}
-.wc-icon svg{width:16px;height:16px;fill:none;stroke:var(--text);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
-.who-card.hl .wc-icon svg{stroke:rgba(255,255,255,.8);}
-.who-card h3{font-size:14px;font-weight:600;margin-bottom:5px;color:var(--text);}
-.who-card p{font-size:12.5px;color:var(--muted);line-height:1.6;}
-
-/* ── TESTIMONIALS ── */
-.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px;}
-.tc{
-  background:var(--white);
-  border:1px solid var(--border);border-radius:16px;
-  padding:26px;
-  transition:box-shadow .25s,transform .25s;
-}
-.tc:hover{box-shadow:0 8px 32px rgba(0,0,0,.07);transform:translateY(-2px);}
-.tc-stars{display:flex;gap:2px;margin-bottom:14px;}
-.tc-stars svg{width:12px;height:12px;fill:var(--muted2);stroke:none;}
-.tc blockquote{
-  font-family:'Playfair Display',serif;
-  font-size:15px;font-style:italic;
-  color:var(--text);line-height:1.75;
-}
-.tc-author{margin-top:18px;display:flex;align-items:center;gap:10px;padding-top:14px;border-top:1px solid var(--border);}
-.tc-av{width:34px;height:34px;border-radius:50%;background:var(--stone);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;}
-.tc-name{font-size:13px;font-weight:600;color:var(--text);}
-.tc-role{font-size:11.5px;color:var(--muted);}
-
-/* ── PRICING ── */
-.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:48px;}
-.pc{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:30px;position:relative;transition:box-shadow .25s,transform .25s;}
-.pc:hover{box-shadow:0 8px 32px rgba(0,0,0,.07);transform:translateY(-2px);}
-.pc.hl{background:var(--black);border-color:var(--black);}
-.pc.hl h3,.pc.hl .pc-desc,.pc.hl .pc-price,.pc.hl .pc-feats li{color:rgba(255,255,255,.9);}
-.pc.hl .pc-desc{color:rgba(255,255,255,.5);}
-.pc.hl .pc-feats li{border-bottom-color:rgba(255,255,255,.07);}
-.pc.hl .pc-feats li:last-child{border-bottom:none;}
-.pc.hl .pc-div{background:rgba(255,255,255,.1);}
-.pc.hl svg{stroke:rgba(255,255,255,.6);}
-.pop-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--white);color:var(--text);font-size:10px;font-weight:600;border-radius:50px;padding:3px 14px;white-space:nowrap;border:1px solid var(--border);letter-spacing:.5px;}
-.pc h3{font-size:16px;font-weight:600;margin-bottom:4px;color:var(--text);}
-.pc-desc{font-size:13px;color:var(--muted);margin-bottom:14px;}
-.pc-price{font-family:'Playfair Display',serif;font-size:38px;font-weight:700;color:var(--text);}
-.pc-price sub{font-family:'Inter',sans-serif;font-size:14px;font-weight:400;color:var(--muted);}
-.pc-div{height:1px;background:var(--border);margin:18px 0;}
+.b2b-m .mv{font-size:21px;font-weight:700;color:var(--text);margin-top:1px;}
+.b2b-q{margin-top:12px;font-size:13px;color:var(--muted);line-height:1.7;padding-left:11px;border-left:2px solid var(--border);}
+.who-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bl);border:1px solid var(--bl);border-radius:14px;overflow:hidden;margin-top:24px;}
+.who-card{background:var(--white);padding:20px 16px;transition:background .15s;}
+.who-card:hover{background:var(--bg2);}
+.who-card.dark{background:var(--text);}
+.wc-ic{width:30px;height:30px;border-radius:8px;background:var(--bg);display:flex;align-items:center;justify-content:center;margin-bottom:9px;}
+.who-card.dark .wc-ic{background:rgba(255,255,255,.1);}
+.wc-ic svg{width:14px;height:14px;fill:none;stroke:var(--text);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.who-card.dark .wc-ic svg{stroke:#fff;}
+.who-card h3{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.who-card p{font-size:12px;color:var(--muted);line-height:1.5;}
+.who-card.dark h3{color:#fff;}
+.who-card.dark p{color:rgba(255,255,255,.4);}
+.test-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px;}
+.tc{background:var(--bg2);border:1px solid var(--bl);border-radius:12px;padding:20px;}
+.tc-stars{display:flex;gap:2px;margin-bottom:9px;}
+.tc-stars svg{width:11px;height:11px;fill:var(--muted2);}
+.tc blockquote{font-size:13.5px;color:var(--text);line-height:1.7;}
+.tc-auth{margin-top:13px;padding-top:11px;border-top:1px solid var(--bl);display:flex;align-items:center;gap:8px;}
+.tc-av{width:28px;height:28px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--muted);}
+.tc-nm{font-size:12.5px;font-weight:600;color:var(--text);}
+.tc-rl{font-size:11px;color:var(--muted);}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px;}
+.pc{background:var(--white);border:1px solid var(--bl);border-radius:14px;padding:26px;position:relative;transition:box-shadow .2s;}
+.pc:hover{box-shadow:0 4px 24px rgba(0,0,0,.07);}
+.pc.featured{border-color:var(--blue);background:#f5f9ff;}
+.pop-tag{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;font-size:10px;font-weight:600;border-radius:50px;padding:3px 12px;white-space:nowrap;}
+.pc h3{font-size:16px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.pc-d{font-size:12.5px;color:var(--muted);margin-bottom:12px;}
+.pc-p{font-size:32px;font-weight:700;color:var(--text);letter-spacing:-.5px;}
+.pc-p sub{font-size:13px;font-weight:400;color:var(--muted);}
+.pc-div{height:1px;background:var(--bl);margin:14px 0;}
 .pc-feats{list-style:none;}
-.pc-feats li{padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px;}
+.pc-feats li{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);padding:5px 0;border-bottom:1px solid rgba(0,0,0,.04);}
 .pc-feats li:last-child{border-bottom:none;}
-.pc-feats li svg{width:13px;height:13px;flex-shrink:0;stroke:var(--text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-
-/* ── CTA ── */
-.cta-wrap{
-  background:var(--black);
-  border-radius:24px;padding:80px 60px;text-align:center;
-  color:#fff;position:relative;overflow:hidden;
-}
-.cta-wrap::before{
-  content:'';position:absolute;top:-180px;left:50%;transform:translateX(-50%);
-  width:600px;height:500px;
-  background:radial-gradient(circle,rgba(255,255,255,.04) 0%,transparent 65%);
-  pointer-events:none;
-}
-.cta-wrap h2{
-  font-family:'Playfair Display',serif;
-  font-size:clamp(28px,4vw,52px);
-  font-weight:700;font-style:italic;
-  letter-spacing:-.5px;margin-bottom:14px;
-}
-.cta-wrap p{font-size:16px;opacity:.5;max-width:420px;margin:0 auto 28px;}
+.pc-feats li svg{width:12px;height:12px;flex-shrink:0;stroke:var(--text);fill:none;stroke-width:2.5;stroke-linecap:round;}
+.faq-list{margin-top:20px;border-top:1px solid var(--bl);}
+.faq-item{border-bottom:1px solid var(--bl);}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:15px 0;font-size:14.5px;font-weight:500;color:var(--text);cursor:pointer;gap:14px;}
+.faq-q:hover{color:var(--blue);}
+.faq-q svg{width:15px;height:15px;flex-shrink:0;stroke:var(--muted);fill:none;stroke-width:2;stroke-linecap:round;transition:transform .2s;}
+.faq-item.open .faq-q svg{transform:rotate(45deg);}
+.faq-a{font-size:14px;color:var(--muted);line-height:1.75;padding-bottom:15px;display:none;}
+.faq-item.open .faq-a{display:block;}
+.stats-card{background:var(--white);border:1px solid var(--bl);border-radius:18px;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,.04);margin-top:44px;}
+.stats-top{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--bl);}
+.st-l{padding:36px;border-right:1px solid var(--bl);}
+.st-l h2{font-size:clamp(20px,2.5vw,30px);font-weight:700;letter-spacing:-.4px;line-height:1.1;}
+.st-r{padding:36px;display:flex;flex-direction:column;justify-content:center;}
+.st-r p{font-size:14px;color:var(--muted);line-height:1.8;}
+.stat-row{display:grid;grid-template-columns:repeat(5,1fr);}
+.stat-box{padding:24px 16px;text-align:center;border-right:1px solid var(--bl);}
+.stat-box:last-child{border-right:none;}
+.stat-n{font-size:26px;font-weight:700;color:var(--text);}
+.stat-box p{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.5;}
+.cta-banner{background:var(--text);border-radius:18px;padding:56px 44px;text-align:center;color:#fff;margin-top:44px;}
+.cta-banner h2{font-size:clamp(22px,3.5vw,36px);font-weight:700;letter-spacing:-.4px;margin-bottom:12px;}
+.cta-banner p{font-size:16px;opacity:.5;max-width:380px;margin:0 auto 22px;}
 .cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
-.btn-white{background:#fff;color:var(--black);border:none;font-weight:600;}
-.btn-white:hover{opacity:.92;}
-.btn-wout{background:transparent;border:1px solid rgba(255,255,255,.2);color:#fff;}
-.btn-wout:hover{border-color:rgba(255,255,255,.5);}
-
-/* ── FOOTER ── */
-footer{background:var(--black);color:#666;padding:52px 80px 32px;}
-.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;max-width:1080px;margin:0 auto;}
-.ft-brand{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;font-style:italic;color:#fff;margin-bottom:12px;}
-.ft-desc{font-size:13px;color:#555;line-height:1.75;max-width:220px;}
-.ft-email{font-size:13px;color:#666;margin-top:12px;}
-.ft-col h4{font-size:10px;font-weight:600;color:#444;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;}
-.ft-col a{display:block;font-size:13px;color:#555;text-decoration:none;margin-bottom:8px;transition:color .15s;}
-.ft-col a:hover{color:#fff;}
-.ft-bottom{max-width:1080px;margin:36px auto 0;padding-top:20px;border-top:1px solid #1a1a18;display:flex;justify-content:space-between;font-size:12px;color:#333;}
-
-/* ── SCROLL REVEAL ── */
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);}
-.reveal.visible{opacity:1;transform:translateY(0);}
-.reveal-delay-1{transition-delay:.1s;}
-.reveal-delay-2{transition-delay:.2s;}
-.reveal-delay-3{transition-delay:.3s;}
-
-/* Blur on scroll effect for section cards */
-.blur-card{
-  transition:
-    box-shadow .4s ease,
-    filter .4s ease,
-    opacity .6s ease,
-    transform .6s cubic-bezier(.16,1,.3,1);
+.btn-w{background:#fff;color:var(--text);border:none;font-weight:600;}
+.btn-w:hover{opacity:.9;}
+.btn-wo{background:transparent;border:1px solid rgba(255,255,255,.25);color:#fff;}
+.btn-wo:hover{border-color:rgba(255,255,255,.5);}
+/* ── COMPARISON TABLE — iOS glass ── */
+.cmp-wrap{
+  margin-top:28px;
+  border-radius:18px;
+  overflow:hidden;
+  border:1px solid rgba(0,0,0,.07);
+  box-shadow:0 8px 32px rgba(0,0,0,.06),0 2px 8px rgba(0,0,0,.04);
+  backdrop-filter:blur(20px) saturate(160%);
+  -webkit-backdrop-filter:blur(20px) saturate(160%);
+  background:rgba(255,255,255,.75);
 }
-.blur-card.out-of-view{
-  filter:blur(4px);
-  opacity:.4;
-  transform:scale(.97);
+.cmp-tbl{width:100%;border-collapse:collapse;}
+.cmp-tbl thead tr{
+  background:rgba(245,245,247,.9);
+  border-bottom:1px solid rgba(0,0,0,.07);
 }
+.cmp-tbl th{
+  font-size:10.5px;font-weight:700;
+  color:#8e8e93;
+  text-transform:uppercase;letter-spacing:.6px;
+  padding:14px 20px;text-align:left;
+}
+.cmp-tbl th.c{text-align:center;}
+.cmp-tbl th.k{color:var(--text);font-weight:800;font-size:11px;letter-spacing:.4px;}
+.cmp-tbl td{
+  padding:15px 20px;
+  font-size:13.5px;
+  color:#6e6e73;
+  border-bottom:1px solid rgba(0,0,0,.05);
+  transition:background .15s;
+}
+.cmp-tbl td.c{text-align:center;}
+.cmp-tbl td:first-child{color:var(--text);font-weight:400;}
+.cmp-tbl tbody tr:last-child td{border-bottom:none;}
+.cmp-tbl tbody tr:hover td{background:rgba(0,0,0,.02);}
+/* Keepin column highlight */
+.cmp-tbl td.k-col{
+  background:rgba(0,113,227,.04);
+  border-left:none;border-right:none;
+}
+.cmp-tbl thead th.k-col{background:rgba(0,113,227,.06);}
+.ck{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:20px;height:20px;
+  background:rgba(0,113,227,.1);
+  border-radius:50%;
+  color:var(--blue);font-size:12px;font-weight:700;
+}
+.cx{color:#d1d1d6;font-size:16px;font-weight:300;}
+footer{background:var(--bg2);border-top:1px solid var(--bl);padding:40px 32px 26px;}
+.ft-wrap{max-width:1060px;margin:0 auto;}
+.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:24px;}
+.ft-brand{font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.ft-desc{font-size:12.5px;color:var(--muted);line-height:1.7;max-width:200px;}
+.ft-col h4{font-size:10.5px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.7px;margin-bottom:11px;}
+.ft-col a{display:block;font-size:13px;color:var(--muted);text-decoration:none;margin-bottom:7px;transition:color .15s;}
+.ft-col a:hover{color:var(--text);}
+.ft-bottom{padding-top:18px;border-top:1px solid var(--bl);display:flex;justify-content:space-between;font-size:12px;color:var(--muted2);}
 
-/* ── RESPONSIVE ── */
+/* ── HERO SCROLL ANIMATIONS ── */
+@keyframes heroFadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes heroFadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes screenFloat{0%,100%{transform:translateY(0) rotate(-.3deg)}50%{transform:translateY(-10px) rotate(.3deg)}}
+@keyframes badgePop{from{opacity:0;transform:scale(.88) translateY(6px)}to{opacity:1;transform:scale(1) translateY(0)}}
+
+.hero-badge-anim{animation:badgePop .5s cubic-bezier(.34,1.56,.64,1) .1s both;}
+.hero-h1-anim{animation:heroFadeUp .7s cubic-bezier(.16,1,.3,1) .2s both;}
+.hero-sub-anim{animation:heroFadeIn .7s cubic-bezier(.16,1,.3,1) .35s both;}
+.hero-btns-anim{animation:heroFadeIn .7s cubic-bezier(.16,1,.3,1) .5s both;}
+.hero-note-anim{animation:heroFadeIn .6s ease .65s both;}
+.hero-preview-anim{animation:heroFadeIn .8s cubic-bezier(.16,1,.3,1) .75s both;}
+.hero-screen-float{animation:screenFloat 7s ease-in-out infinite 1.5s;}
+
+/* ── SECTION REVEAL (enhanced) ── */
+.reveal{
+  opacity:0;transform:translateY(20px);
+  transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1);
+}
+.reveal.in{opacity:1;transform:none;}
+.rd1{transition-delay:.1s;}
+.rd2{transition-delay:.2s;}
+.rd3{transition-delay:.3s;}
+
+/* stagger children of grids */
+.steps-grid .step-cell,.feat-list .feat-item,.who-grid .who-card,.test-row .tc,.price-grid .pc{
+  opacity:0;transform:translateY(18px);
+  transition:opacity .55s cubic-bezier(.16,1,.3,1),transform .55s cubic-bezier(.16,1,.3,1),box-shadow .2s,background .15s;
+}
+.steps-grid.in .step-cell,.feat-list.in .feat-item,.who-grid.in .who-card,.test-row.in .tc,.price-grid.in .pc{opacity:1;transform:none;}
+.steps-grid.in .step-cell:nth-child(1),.feat-list.in .feat-item:nth-child(1),.who-grid.in .who-card:nth-child(1),.test-row.in .tc:nth-child(1),.price-grid.in .pc:nth-child(1){transition-delay:.05s;}
+.steps-grid.in .step-cell:nth-child(2),.feat-list.in .feat-item:nth-child(2),.who-grid.in .who-card:nth-child(2),.test-row.in .tc:nth-child(2),.price-grid.in .pc:nth-child(2){transition-delay:.12s;}
+.steps-grid.in .step-cell:nth-child(3),.feat-list.in .feat-item:nth-child(3),.who-grid.in .who-card:nth-child(3),.test-row.in .tc:nth-child(3),.price-grid.in .pc:nth-child(3){transition-delay:.19s;}
+.steps-grid.in .step-cell:nth-child(4),.feat-list.in .feat-item:nth-child(4),.who-grid.in .who-card:nth-child(4){transition-delay:.26s;}
+.feat-list.in .feat-item:nth-child(5),.who-grid.in .who-card:nth-child(5){transition-delay:.19s;}
+.feat-list.in .feat-item:nth-child(6),.who-grid.in .who-card:nth-child(6){transition-delay:.26s;}
+.who-grid.in .who-card:nth-child(7){transition-delay:.3s;}
+.who-grid.in .who-card:nth-child(8){transition-delay:.34s;}
+
 @media(max-width:900px){
-  nav{padding:0 20px;}
-  .nav-links{display:none;}
-  .hero{grid-template-columns:1fr;}
-  .hero-right{display:none;}
-  .hero-left{padding:40px 24px;}
-  section{padding:64px 24px;}
-  .hw-grid,.b2b-panel.active,.feat-grid,.who-grid,.test-grid,.price-grid,.ft-grid,.stats-top,.spd-grid{grid-template-columns:1fr;}
-  .feat-cell.span2{grid-column:span 1;}
-  .stat-grid{grid-template-columns:repeat(2,1fr);}
-  .cta-wrap{padding:48px 24px;}
-  footer{padding:40px 24px 24px;}
+  .top-nav{padding:0 16px;}.tn-links{display:none;}
+  .local-nav{padding:0 16px;}
+  .page-wrap{padding:0 20px;flex-direction:column;}
+  .sidebar{display:none;}
+  .main{padding:0 0 80px;}
+  .hero{padding:60px 20px 40px;}
+  .ap-body{grid-template-columns:1fr;}.ap-sb,.ap-chat{display:none;}
+  .steps-grid,.feat-list,.who-grid,.test-row,.price-grid,.ft-grid,.b2b-panel.active,.stats-top,.stat-row{grid-template-columns:1fr;}
+  .try-header{grid-template-columns:1fr;}
+  .try-phone-wrap{justify-content:center;}
+  footer{padding:32px 20px 20px;}
+  .cta-banner{padding:40px 22px;}
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <div style="display:flex;align-items:center;gap:16px;">
-    <a href="#" style="text-decoration:none;">
-      <!-- Replace src with actual keepinlogo.jpg path -->
-      <img src="keepinlogo.jpg" alt="Keepin" class="logo-img"
-        onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
-      <div class="logo-fallback" style="display:none;">keep<span>in</span></div>
-    </a>
-  </div>
-  <div class="nav-links">
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <a class="tn-logo" href="#">
+    <img src="keepinlogo.jpg" alt="Keepin"
+      onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
+    <span class="tn-logo-fb">keepin™</span>
+  </a>
+  <div class="tn-links">
+
+    <!-- Products — features, how it works, try the app -->
     <div class="nav-item">
-      <button class="nav-btn" onclick="toggleMenu('products')" id="btn-products">Products<svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      <button class="nav-trigger" id="btn-products" onclick="toggleMenu('products')">
+        Products
+        <span class="chevron"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+      </button>
       <div class="mega" id="menu-products">
-        <div class="mega-label">Core Features</div>
+        <div class="mega-section">The App</div>
         <div class="mega-grid">
-          <a class="mega-item" href="#"><div class="mi-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div><div><div class="mi-t">Visual AI Tracking</div><div class="mi-s">See it, store it instantly</div></div></a>
-          <a class="mega-item" href="#"><div class="mi-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><div class="mi-t">AI Chatbot</div><div class="mi-s">Ask anything, anytime</div></div></a>
-          <a class="mega-item" href="#"><div class="mi-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div><div class="mi-t">Virtual Rummage</div><div class="mi-s">Browse spaces on your phone</div></div></a>
-          <a class="mega-item" href="#"><div class="mi-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div><div><div class="mi-t">Calendar Sync</div><div class="mi-s">Smart daily suggestions</div></div></a>
-          <a class="mega-item" href="#"><div class="mi-icon"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div><div><div class="mi-t">Smart Containers</div><div class="mi-s">Optional NFC & QR tags</div></div></a>
-          <a class="mega-item" href="#"><div class="mi-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><div><div class="mi-t">Inventory Dashboard</div><div class="mi-s">Full item history & reports</div></div></a>
+          <a class="mega-row" href="#overview"><div class="mega-ic"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div><div class="mega-title">Overview</div><div class="mega-sub">What Keepin is & how it works</div></div></a>
+          <a class="mega-row" href="#how-it-works"><div class="mega-ic"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 3v7l4 2"/></svg></div><div><div class="mega-title">How It Works</div><div class="mega-sub">4 steps from scan to find</div></div></a>
+          <a class="mega-row" href="#try-app"><div class="mega-ic"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div><div><div class="mega-title">Try the App</div><div class="mega-sub">Interactive prototype — live demo</div></div></a>
+          <a class="mega-row" href="#compare"><div class="mega-ic"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div><div class="mega-title">Why Keepin</div><div class="mega-sub">vs. barcodes, spreadsheets &amp; more</div></div></a>
+        </div>
+        <div class="mega-section">Core Features</div>
+        <div class="mega-grid">
+          <a class="mega-row" href="#features"><div class="mega-ic"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div><div><div class="mega-title">Visual AI Tracking</div><div class="mega-sub">Point camera, item is stored instantly</div></div></a>
+          <a class="mega-row" href="#features"><div class="mega-ic"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><div class="mega-title">AI Chatbot</div><div class="mega-sub">Ask where anything is, naturally</div></div></a>
+          <a class="mega-row" href="#features"><div class="mega-ic"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div><div class="mega-title">Virtual Rummage</div><div class="mega-sub">Browse drawers on screen</div></div></a>
+          <a class="mega-row" href="#features"><div class="mega-ic"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div><div><div class="mega-title">Smart Containers &amp; Tags</div><div class="mega-sub">Optional QR &amp; NFC tags, auto-detected</div></div></a>
+          <a class="mega-row" href="#features"><div class="mega-ic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div><div><div class="mega-title">Calendar &amp; Weather Sync</div><div class="mega-sub">Smart daily item suggestions</div></div></a>
+          <a class="mega-row" href="#features"><div class="mega-ic"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div><div class="mega-title">Learns Your Habits</div><div class="mega-sub">AI that gets smarter over time</div></div></a>
         </div>
       </div>
     </div>
+
+    <!-- Solutions — by use case -->
     <div class="nav-item">
-      <button class="nav-btn" onclick="toggleMenu('solutions')" id="btn-solutions">Solutions<svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      <button class="nav-trigger" id="btn-solutions" onclick="toggleMenu('solutions')">
+        Solutions
+        <span class="chevron"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+      </button>
       <div class="mega" id="menu-solutions">
-        <div class="mega-label">By Industry</div>
+        <div class="mega-section">For Home</div>
         <div class="mega-grid">
-          <a class="mega-item" href="#"><div class="mi-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><div class="mi-t">Homeowners</div><div class="mi-s">Never lose anything at home</div></div></a>
-          <a class="mega-item" href="#"><div class="mi-icon"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div><div><div class="mi-t">Warehouses</div><div class="mi-s">Real-time inventory control</div></div></a>
-          <a class="mega-item" href="#"><div class="mi-icon"><svg viewBox="0 0 24 24"><path d="M2 20h20M4 20V10l8-7 8 7v10"/></svg></div><div><div class="mi-t">Construction</div><div class="mi-s">Tool & equipment tracking</div></div></a>
-          <a class="mega-item" href="#"><div class="mi-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/></svg></div><div><div class="mi-t">Offices & Teams</div><div class="mi-s">Shared asset management</div></div></a>
+          <a class="mega-row" href="#for-home"><div class="mega-ic"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><div class="mega-title">Homeowners</div><div class="mega-sub">Never lose anything at home</div></div></a>
+          <a class="mega-row" href="#for-home"><div class="mega-ic"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><div class="mega-title">Families</div><div class="mega-sub">Shared household memory</div></div></a>
+          <a class="mega-row" href="#who-uses-it"><div class="mega-ic"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></div><div><div class="mega-title">Students</div><div class="mega-sub">Dorm &amp; study organisation</div></div></a>
+          <a class="mega-row" href="#testimonials"><div class="mega-ic"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><div class="mega-title">Customer Reviews</div><div class="mega-sub">Real user stories</div></div></a>
         </div>
-        <div class="mega-label" style="margin-top:14px;">By Role</div>
+        <div class="mega-section">For Business</div>
         <div class="mega-grid">
-          <a class="mega-item" href="#"><div class="mi-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><div class="mi-t">Families</div><div class="mi-s">Household shared memory</div></div></a>
-          <a class="mega-item" href="#"><div class="mi-icon"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div><div><div class="mi-t">Contractors</div><div class="mi-s">Multi-site tool tracking</div></div></a>
-          <a class="mega-item" href="#"><div class="mi-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><div><div class="mi-t">Property Managers</div><div class="mi-s">Unit inventory & docs</div></div></a>
-          <a class="mega-item" href="#"><div class="mi-icon"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></div><div><div class="mi-t">Students</div><div class="mi-s">Dorm & study organization</div></div></a>
+          <a class="mega-row" href="#for-business"><div class="mega-ic"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div><div><div class="mega-title">Warehouses</div><div class="mega-sub">Real-time floor inventory control</div></div></a>
+          <a class="mega-row" href="#for-business"><div class="mega-ic"><svg viewBox="0 0 24 24"><path d="M2 20h20M4 20V10l8-7 8 7v10"/></svg></div><div><div class="mega-title">Construction</div><div class="mega-sub">Tool &amp; equipment tracking</div></div></a>
+          <a class="mega-row" href="#for-business"><div class="mega-ic"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/></svg></div><div><div class="mega-title">Offices &amp; Teams</div><div class="mega-sub">Shared asset management</div></div></a>
+          <a class="mega-row" href="#for-business"><div class="mega-ic"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><div><div class="mega-title">Property Managers</div><div class="mega-sub">Unit inventory &amp; documentation</div></div></a>
+          <a class="mega-row" href="#for-business"><div class="mega-ic"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div><div><div class="mega-title">Contractors</div><div class="mega-sub">Multi-site tool tracking</div></div></a>
+          <a class="mega-row" href="#pricing"><div class="mega-ic"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><div><div class="mega-title">Business Pricing</div><div class="mega-sub">Custom plans for teams</div></div></a>
         </div>
       </div>
     </div>
+
+    <!-- Company -->
     <div class="nav-item">
-      <button class="nav-btn" onclick="toggleMenu('company')" id="btn-company">Company<svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      <button class="nav-trigger" id="btn-company" onclick="toggleMenu('company')">
+        Company
+        <span class="chevron"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+      </button>
       <div class="mega" id="menu-company">
-        <div class="mega-label">About Us</div>
+        <div class="mega-section">About Us</div>
         <div class="mega-grid">
-          <a class="mega-item" href="#"><div class="mi-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div><div class="mi-t">About Keepin</div><div class="mi-s">Our story & mission</div></div></a>
-          <a class="mega-item" href="#"><div class="mi-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><div class="mi-t">Our Team</div><div class="mi-s">Meet the founders</div></div></a>
-          <a class="mega-item" href="#"><div class="mi-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/></svg></div><div><div class="mi-t">Careers</div><div class="mi-s">Join our team</div></div></a>
-          <a class="mega-item" href="#"><div class="mi-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><div class="mi-t">Blog & Press</div><div class="mi-s">News & announcements</div></div></a>
+          <a class="mega-row" href="#"><div class="mega-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div><div class="mega-title">About Keepin</div><div class="mega-sub">Our story &amp; mission</div></div></a>
+          <a class="mega-row" href="#"><div class="mega-ic"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div><div class="mega-title">Our Team</div><div class="mega-sub">Meet the founders</div></div></a>
+          <a class="mega-row" href="#"><div class="mega-ic"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/></svg></div><div><div class="mega-title">Careers</div><div class="mega-sub">Join our team</div></div></a>
+          <a class="mega-row" href="#"><div class="mega-ic"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><div class="mega-title">Blog &amp; Press</div><div class="mega-sub">News &amp; announcements</div></div></a>
         </div>
-        <div class="mega-label" style="margin-top:14px;">Get Started</div>
+        <div class="mega-section">Partners &amp; Growth</div>
         <div class="mega-grid">
-          <a class="mega-item" href="#"><div class="mi-icon"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><div><div class="mi-t">Pricing</div><div class="mi-s">Plans & pricing</div></div></a>
-          <a class="mega-item" href="#"><div class="mi-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><div><div class="mi-t">Partner With Us</div><div class="mi-s">Become a partner</div></div></a>
+          <a class="mega-row" href="#"><div class="mega-ic"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><div><div class="mega-title">Partner With Us</div><div class="mega-sub">Become a Keepin partner</div></div></a>
+          <a class="mega-row" href="#"><div class="mega-ic"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg></div><div><div class="mega-title">Referral Program</div><div class="mega-sub">Earn rewards for sharing</div></div></a>
+          <a class="mega-row" href="#"><div class="mega-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div class="mega-title">Changelog</div><div class="mega-sub">What's new in Keepin</div></div></a>
+          <a class="mega-row" href="#"><div class="mega-ic"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><div class="mega-title">Amazon Store</div><div class="mega-sub">Buy QR &amp; NFC tag packs</div></div></a>
         </div>
       </div>
     </div>
+
+    <!-- Pricing — direct link -->
+    <a class="tn-plain" href="#pricing">Pricing</a>
+
+    <!-- Support — direct link -->
+    <a class="tn-plain" href="#faq">Support</a>
+
   </div>
-  <div class="nav-r">
-    <a href="#" class="btn btn-ghost">Sign In</a>
-    <a href="#" class="btn btn-dark">Get Early Access</a>
+  <div class="tn-r">
+    <a href="#" class="btn-nav btn-out">Sign In</a>
+    <a href="#" class="btn-nav btn-fill">Download App</a>
   </div>
 </nav>
 
+<!-- LOCAL NAV removed -->
+
 <!-- HERO -->
-<div class="hero">
-  <div class="hero-left">
-    <div class="hero-eyebrow">Keepin on Mobile</div>
-    <h1 class="serif">Use <em>Keepin</em><br/>wherever you are.</h1>
-    <p class="hero-sub">From your bedroom closet to your warehouse floor — Keepin's visual AI tracks, finds, and organizes everything you own. No tags. No searching. Just ask.</p>
-    <div class="hero-btns">
-      <a href="#" class="btn btn-dark btn-lg">Get Early Access</a>
-      <a href="#how" class="btn btn-ghost btn-lg">How It Works</a>
-    </div>
+<div id="overview" class="hero">
+  <h1 class="hero-h1-anim">Keepin<span style="color:var(--blue);">™</span> knows where<br/>you put that.</h1>
+  <p class="hero-sub hero-sub-anim">Point your camera as you put things away. Ask anything, anytime. Your items — always found.</p>
+  <div class="hero-btns hero-btns-anim">
+    <a href="#" class="btn btn-primary">Download on iOS</a>
+    <a href="#" class="btn btn-secondary">Get Android Early Access</a>
   </div>
-  <div class="hero-right">
-    <div class="hero-right-inner">
-      <!-- Floating app card -->
-      <div class="app-card">
-        <div class="app-card-top">
-          <div class="app-card-logo">keepin™</div>
-          <div class="app-card-badge">3 Found</div>
+  <p class="hero-note hero-note-anim">Free to download · Patent-pending AI · No manual entry needed</p>
+  <div class="app-preview hero-preview-anim hero-screen-float">
+    <div class="ap-bar">
+      <div class="ap-dot" style="background:#ff5f57"></div>
+      <div class="ap-dot" style="background:#febc2e"></div>
+      <div class="ap-dot" style="background:#28c840"></div>
+      <div class="ap-url">keepin.app / dashboard</div>
+    </div>
+    <div class="ap-body">
+      <div class="ap-sb">
+        <div class="ap-sb-logo">keepin™</div>
+        <div class="ap-sb-lbl">Find</div>
+        <div class="ap-sb-r on"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>All Items</div>
+        <div class="ap-sb-r"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>By Room</div>
+        <div class="ap-sb-r"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Ask AI</div>
+        <div class="ap-sb-lbl">Organise</div>
+        <div class="ap-sb-r"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Containers</div>
+        <div class="ap-sb-r"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Reports</div>
+        <div class="ap-sb-stat"><div class="ass-l">Items tracked</div><div class="ass-v">247</div><div class="ass-s">↑ 12 this week</div></div>
+      </div>
+      <div class="ap-main">
+        <div class="ap-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Search or ask anything...</div>
+        <div class="ap-sl">Recently Located</div>
+        <div class="ap-item">
+          <div class="ap-ii" style="background:#f0fdf4"><svg viewBox="0 0 24 24" style="stroke:#16a34a"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></div>
+          <div style="flex:1;min-width:0;">
+            <div class="ap-in">Car Keys</div>
+            <div class="ap-il">Kitchen · Left Drawer · 4 min ago</div>
+          </div>
+          <div class="ap-tag found">Found</div>
         </div>
-        <div class="app-item">
-          <div class="ai-dot" style="background:#4ade80;"></div>
-          <span class="ai-name">Car Keys</span>
-          <span class="ai-loc">Kitchen · Left Drawer</span>
-          <div class="ai-tag">Found</div>
+        <div class="ap-item">
+          <div class="ap-ii" style="background:#eff6ff"><svg viewBox="0 0 24 24" style="stroke:#2563eb"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+          <div style="flex:1;min-width:0;">
+            <div class="ap-in">Blue Sneakers</div>
+            <div class="ap-il">Bedroom · Shelf 2 · Yesterday</div>
+          </div>
+          <div class="ap-tag found">Found</div>
         </div>
-        <div class="app-item">
-          <div class="ai-dot" style="background:#60a5fa;"></div>
-          <span class="ai-name">Blue Sneakers</span>
-          <span class="ai-loc">Bedroom · Shelf 2</span>
-          <div class="ai-tag">Found</div>
+        <div class="ap-item">
+          <div class="ap-ii" style="background:#fffbeb"><svg viewBox="0 0 24 24" style="stroke:#d97706"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+          <div style="flex:1;min-width:0;">
+            <div class="ap-in">Power Drill</div>
+            <div class="ap-il">Garage · Cabinet A · 2 days ago</div>
+          </div>
+          <div class="ap-tag found">Found</div>
         </div>
-        <div class="app-item">
-          <div class="ai-dot" style="background:#f59e0b;"></div>
-          <span class="ai-name">Power Drill</span>
-          <span class="ai-loc">Garage · Cabinet A</span>
-          <div class="ai-tag">Found</div>
+        <div class="ap-item">
+          <div class="ap-ii" style="background:#fff1f2"><svg viewBox="0 0 24 24" style="stroke:#e11d48"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/></svg></div>
+          <div style="flex:1;min-width:0;">
+            <div class="ap-in">Laptop Charger</div>
+            <div class="ap-il">Last seen: Living Room · 3 days ago</div>
+          </div>
+          <div class="ap-tag check">Check</div>
         </div>
       </div>
-      <!-- Quote card -->
-      <div class="hero-quote">
-        <div class="hq-text">"Finally, an app that actually remembers where I put things. I used to spend 20 minutes searching every morning — now I just ask and it knows instantly."</div>
-        <div class="hq-author">Sarah M. &nbsp;·&nbsp; Early Access User</div>
-        <div class="hq-stars">
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        </div>
+      <div class="ap-chat">
+        <div class="ap-chat-t">AI Assistant</div>
+        <div class="cm ai"><div class="bub bub-ai">Hi! Ask me where anything is — I remember everything.</div></div>
+        <div class="cm u"><div class="bub bub-u">Where's my blue jacket?</div></div>
+        <div class="cm ai"><div class="bub bub-ai">Hallway closet, top hook — stored Tuesday 4pm.</div></div>
+        <div class="cm u"><div class="bub bub-u">And my passport?</div></div>
+        <div class="cm ai"><div class="bub bub-ai">Home office desk, top drawer, back left.</div></div>
+        <div class="typing-row"><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>
+        <div class="chat-inp"><span>Ask anything...</span><div class="send-b"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- STRIP -->
+<!-- SCROLL STRIP -->
 <div class="strip">
   <div class="strip-inner">
-    <span class="si">Never lose your keys again</span><span class="si">Warehouse inventory in seconds</span><span class="si">Track every tool on every job site</span><span class="si">Know exactly where every item is</span><span class="si">Whole-home item memory</span><span class="si">Just ask — Keepin knows</span><span class="si">AI sees it as you put it away</span>
-    <span class="si">Never lose your keys again</span><span class="si">Warehouse inventory in seconds</span><span class="si">Track every tool on every job site</span><span class="si">Know exactly where every item is</span><span class="si">Whole-home item memory</span><span class="si">Just ask — Keepin knows</span><span class="si">AI sees it as you put it away</span>
+    <span class="si">Visual AI — no manual entry</span><span class="si">Ask where anything is</span><span class="si">Track tools across job sites</span><span class="si">Whole-home item memory</span><span class="si">Optional QR &amp; NFC tags</span><span class="si">Warehouse inventory in seconds</span><span class="si">Works with Alexa &amp; Google Home</span>
+    <span class="si">Visual AI — no manual entry</span><span class="si">Ask where anything is</span><span class="si">Track tools across job sites</span><span class="si">Whole-home item memory</span><span class="si">Optional QR &amp; NFC tags</span><span class="si">Warehouse inventory in seconds</span><span class="si">Works with Alexa &amp; Google Home</span>
   </div>
 </div>
 
-<!-- PROBLEM -->
-<section>
-  <div class="container">
-    <div class="sec-tag reveal">The Problem</div>
-    <div class="stats-banner reveal reveal-delay-1">
-      <div class="stats-top">
-        <div class="stats-left">
-          <h2 class="serif">Stop wasting days<br/>searching for your things.</h2>
-          <div style="margin-top:24px;display:flex;gap:10px;flex-wrap:wrap;">
-            <a href="#" class="btn btn-dark">Get Early Access</a>
-            <a href="#how" class="btn btn-ghost">How It Works</a>
-          </div>
-        </div>
-        <div class="stats-right">
-          <p>Lost items aren't just annoying — they're a hidden tax on your time, money, and peace of mind. Busy lives and cluttered spaces make it impossible to remember where everything is. Keepin makes it effortless — from first item to instant retrieval.</p>
-        </div>
-      </div>
-      <div class="stat-grid">
-        <div class="stat-box reveal"><div class="stat-num serif">60%</div><p>of Americans report being late due to searching for items</p></div>
-        <div class="stat-box reveal reveal-delay-1"><div class="stat-num serif">2.5</div><p>days per year wasted searching on average</p></div>
-        <div class="stat-box reveal reveal-delay-2"><div class="stat-num serif">1 in 3</div><p>people never find a lost item again</p></div>
-        <div class="stat-box reveal reveal-delay-3"><div class="stat-num serif">$5B+</div><p>in lost items in the US annually</p></div>
-        <div class="stat-box reveal reveal-delay-3"><div class="stat-num serif">200</div><p>days spent searching in a lifetime</p></div>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- MAIN BODY -->
+<div class="page-wrap">
+  <main class="main">
 
-<hr class="div"/>
-
-<!-- HOW IT WORKS -->
-<section id="how">
-  <div class="container">
-    <div class="sec-tag reveal">How It Works</div>
-    <div class="hw-grid">
-      <div>
-        <h2 class="sec-h serif reveal">Here's how Keepin<br/><em>eliminates</em> the searching</h2>
-        <div class="hw-steps" style="margin-top:36px;">
-          <div class="hw-step active" onclick="setStep(0)">
-            <div class="hw-step-head"><div class="hw-num">1</div><h3>Keepin Sees It</h3></div>
-            <p>Point your camera as you naturally put something away. Keepin's visual AI instantly identifies the item — no barcodes, no manual input, no tags required. Patent-pending recognition creates a completely tag-free experience.</p>
-          </div>
-          <div class="hw-step" onclick="setStep(1)">
-            <div class="hw-step-head"><div class="hw-num">2</div><h3>Keepin Remembers It</h3></div>
-            <p>The app logs what the item is, exactly where it was placed, and when — building an intelligent memory map of your entire space. Optional QR and NFC tags make tracking even faster for high-traffic areas.</p>
-          </div>
-          <div class="hw-step" onclick="setStep(2)">
-            <div class="hw-step-head"><div class="hw-num">3</div><h3>Just Ask</h3></div>
-            <p>Type or speak naturally — "Where are my running shoes?" — and Keepin instantly replies with exactly where they are. Ask from the couch, from work, or anywhere. Works with smart speakers too.</p>
-          </div>
-          <div class="hw-step" onclick="setStep(3)">
-            <div class="hw-step-head"><div class="hw-num">4</div><h3>Virtually Rummage</h3></div>
-            <p>Browse a drawer or closet visually on your phone. Scroll through stored items before getting up — a completely new way to find your things without physically searching.</p>
-          </div>
-        </div>
+    <!-- HOW IT WORKS -->
+    <section id="how-it-works" class="block reveal">
+      <span class="eyebrow">How It Works</span>
+      <h2 class="sec-h">Four steps. No learning curve.</h2>
+      <p class="sec-sub">Anyone can start in minutes — no barcodes, no setup, no technical knowledge needed.</p>
+      <div class="steps-grid">
+        <div class="step-cell"><div class="step-num">Step 1</div><div class="step-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div><h3>Point your camera</h3><p>As you put something away, open Keepin and point your camera. The AI identifies the item instantly — no typing needed.</p></div>
+        <div class="step-cell"><div class="step-num">Step 2</div><div class="step-icon"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 3v7l4 2"/></svg></div><h3>Keepin logs it</h3><p>The app records what the item is, where you put it, and when — building a memory map of your whole space automatically.</p></div>
+        <div class="step-cell"><div class="step-num">Step 3</div><div class="step-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><h3>Just ask</h3><p>Type or speak: "Where are my keys?" Keepin replies instantly. Ask from anywhere — couch, work, or via Alexa.</p></div>
+        <div class="step-cell"><div class="step-num">Step 4</div><div class="step-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><h3>Virtually rummage</h3><p>Browse a drawer or shelf on screen before getting up. Scroll through spaces without physically digging through them.</p></div>
       </div>
-      <div class="hw-visual reveal reveal-delay-1">
-        <div class="mock-shell">
-          <div class="mock-bar"><div class="mock-dot" style="background:#ff5f57"></div><div class="mock-dot" style="background:#febc2e"></div><div class="mock-dot" style="background:#28c840"></div></div>
-          <div class="mock-body">
-            <div class="mock-logo">keepin™</div>
-            <div class="mock-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Where are my keys?</div>
-            <div class="mock-item">
-              <div class="mi-box" style="background:#f0fdf4"><svg viewBox="0 0 24 24" style="stroke:#16a34a"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></div>
-              <div><div class="mock-item-name">Car Keys</div><div class="mock-item-loc">Kitchen · Left Drawer</div></div>
-              <div class="mock-fp">Found</div>
-            </div>
-            <div class="mock-item">
-              <div class="mi-box" style="background:#eff6ff"><svg viewBox="0 0 24 24" style="stroke:#2563eb"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
-              <div><div class="mock-item-name">Blue Sneakers</div><div class="mock-item-loc">Bedroom · Shelf 2</div></div>
-              <div class="mock-fp">Found</div>
-            </div>
-            <div class="mock-item">
-              <div class="mi-box" style="background:#fffbeb"><svg viewBox="0 0 24 24" style="stroke:#d97706"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
-              <div><div class="mock-item-name">Power Drill</div><div class="mock-item-loc">Garage · Cabinet A</div></div>
-              <div class="mock-fp">Found</div>
-            </div>
-            <div class="mock-ai">
-              <div class="mock-q">Where's my blue rain jacket?</div>
-              <div class="mock-a">Hallway closet, top hook — you put it there Tuesday at 4pm.</div>
+    </section>
+
+    <!-- TRY THE APP -->
+    <section id="try-app" class="block reveal">
+      <span class="eyebrow">Try the App</span>
+      <h2 class="sec-h">Experience Keepin right now.</h2>
+      <p class="sec-sub">This is the real app — fully interactive. Tap through the screens to see exactly how it works before you download.</p>
+      <div class="try-section">
+        <div class="try-header">
+          <div>
+            <h3 style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px;">What can you try?</h3>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
+              <li style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="var(--blue)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Walk through onboarding to see what new users see</li>
+              <li style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="var(--blue)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Create containers and add items on the Organise tab</li>
+              <li style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="var(--blue)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Search for items on the Find tab to see results</li>
+              <li style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="var(--blue)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>See how Premium is unlocked via QR tag code</li>
+              <li style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="var(--blue)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Try redeeming a code — enter any 4+ characters</li>
+            </ul>
+            <div style="margin-top:24px;padding:16px;background:var(--bg2);border-radius:12px;border:1px solid var(--bl);">
+              <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">Ready to download?</div>
+              <div style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">The real app works exactly the same — but uses your actual camera and stores real items.</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <a href="#" class="btn btn-primary" style="font-size:13px;padding:9px 18px;">Download iOS</a>
+                <a href="#" class="btn btn-secondary" style="font-size:13px;padding:9px 18px;">Android Access</a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
+        <!-- PHONE -->
+        <div class="try-phone-wrap" style="display:flex;justify-content:center;margin-top:16px;">
+          <div class="phone-shell">
+            <div class="phone-status">
+              <span>9:41</span><span style="letter-spacing:1.5px;">● ● ▲</span>
+            </div>
+            <div class="phone-inner">
+              <div class="phone-screen" id="phone-screen">
 
-<hr class="div"/>
+                <!-- ONBOARDING -->
+                <div class="app-screen visible" id="screen-onboarding">
+                  <div class="ob-wrap" id="ob-wrap">
+                    <div class="ob-dots" id="ob-dots"></div>
+                    <button class="ob-skip" onclick="goScreen('home')">Skip</button>
+                    <div class="ob-icon-wrap">
+                      <div class="ob-icon" id="ob-icon">
+                        <!-- icon injected by JS -->
+                      </div>
+                    </div>
+                    <div class="ob-copy">
+                      <div class="ob-title" id="ob-title"></div>
+                      <div class="ob-body" id="ob-body"></div>
+                      <button class="app-btn-primary" id="ob-cta" onclick="obNext()">Continue</button>
+                    </div>
+                  </div>
+                </div>
 
-<!-- WHY -->
-<section>
-  <div class="container">
-    <div class="sec-tag reveal">Why Keepin</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end;margin-bottom:0;">
-      <h2 class="sec-h serif reveal">Keepin vs.<br/><em>everything else</em></h2>
-      <p class="sec-sub reveal reveal-delay-1">Built with patent-pending visual AI, we're the first item memory system that requires zero manual input — faster, smarter, and simpler than anything before.</p>
-    </div>
-    <div class="cmp-wrap reveal reveal-delay-2">
-      <div class="spd-grid">
-        <div class="spd-card">
-          <div class="spd-label">Item lookup time</div>
-          <div class="spd-row"><span class="spd-name">Manual</span><div class="spd-bar"><div class="spd-fill" style="width:88%;background:var(--stone);"></div></div><span class="spd-t">15–30 min</span></div>
-          <div class="spd-row"><span class="spd-name k">Keepin</span><div class="spd-bar"><div class="spd-fill" style="width:12%;"></div></div><span class="spd-t">Under 5 sec</span></div>
+                <!-- HOME -->
+                <div class="app-screen" id="screen-home">
+                  <div class="app-home">
+                    <div class="app-grad-strip">
+                      <div class="app-greeting-sm">Good morning</div>
+                      <div class="app-greeting-name" id="home-name">Sneha</div>
+                    </div>
+                    <div class="app-search-row" onclick="goScreen('search')">
+                      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                      <span class="app-search-placeholder">Search your items…</span>
+                    </div>
+                    <div class="stats-row">
+                      <div class="stat-tile"><div class="stat-v" id="stat-loc">2</div><div class="stat-l">Locations</div></div>
+                      <div class="stat-tile"><div class="stat-v" id="stat-con">1</div><div class="stat-l">Containers</div></div>
+                      <div class="stat-tile"><div class="stat-v" id="stat-items">1</div><div class="stat-l">Items</div></div>
+                    </div>
+                    <div class="action-grid">
+                      <button class="action-card" onclick="goScreen('organise')" style="background:linear-gradient(145deg,#fef4f2,#fbf0ef);border-color:#f0d8d5;">
+                        <div class="action-card-icon" style="box-shadow:0 2px 8px rgba(232,100,90,.1)"><svg viewBox="0 0 24 24" style="stroke:var(--brand)"><path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8M20 16v2.5A1.5 1.5 0 0 1 18.5 20H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></div>
+                        <div class="action-card-title">Organise</div>
+                        <div class="action-card-sub">Containers &amp; items</div>
+                      </button>
+                      <button class="action-card" onclick="goScreen('premium')" style="background:linear-gradient(145deg,#f7f0fb,#f2eafa);border-color:#ddd0e8;position:relative;">
+                        <div style="position:absolute;top:10px;right:10px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="var(--app-muted2)" stroke-width="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="var(--app-muted2)" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+                        <div class="action-card-icon"><svg viewBox="0 0 24 24" style="stroke:var(--lav)"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v4M9 22h6" stroke-linecap="round"/></svg></div>
+                        <div class="action-card-title">Ask</div>
+                        <div class="action-card-sub">Premium feature</div>
+                      </button>
+                    </div>
+                    <div class="section-row">
+                      <div class="section-row-title">Recently added</div>
+                      <button class="section-row-link" onclick="goScreen('search')">View all →</button>
+                    </div>
+                    <div id="home-items"></div>
+                    <div class="cta-row">
+                      <button class="cta-tile" onclick="goScreen('gettags')" style="background:var(--gold-bg);border-color:#edd8b0;">
+                        <div class="cta-tile-ic"><svg viewBox="0 0 24 24" style="width:17px;height:17px;fill:none;stroke:var(--gold);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;"><rect x="2" y="13" width="9" height="9" rx="1.5"/><rect x="13" y="13" width="9" height="9" rx="1.5"/><rect x="7.5" y="2" width="9" height="9" rx="1.5"/></svg></div>
+                        <div class="cta-tile-title">Get QR Tags</div>
+                        <div class="cta-tile-sub">Buy on Amazon</div>
+                      </button>
+                      <button class="cta-tile" onclick="goScreen('redeem')" style="background:var(--lav-bg);border-color:#ddd0e8;">
+                        <div class="cta-tile-ic"><svg viewBox="0 0 24 24" style="width:17px;height:17px;fill:none;stroke:var(--lav);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;"><circle cx="8.5" cy="13.5" r="4.5"/><path d="M11.5 10.5L20 4M18 6l2 2M15 7l2 2"/></svg></div>
+                        <div class="cta-tile-title">Redeem Code</div>
+                        <div class="cta-tile-sub">Unlock Premium</div>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ORGANISE -->
+                <div class="app-screen" id="screen-organise">
+                  <div style="background:var(--app-grad);padding:18px 18px 14px;font-family:'Inter',sans-serif;">
+                    <div style="font-weight:800;font-size:21px;color:var(--app-ink);letter-spacing:-.4px;">Organise</div>
+                    <div style="font-size:12px;color:var(--app-muted);margin-top:2px;">Build your inventory step by step</div>
+                  </div>
+                  <div style="padding:0 18px 20px;font-family:'Inter',sans-serif;">
+                    <div class="screen-lbl-sm" style="margin-top:18px;">Step 1 — Create a Container</div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:20px;">
+                      <button onclick="addContainer('QR Box')" style="background:linear-gradient(145deg,#fef4f2,#f7f0fb);border:1px solid #edd8d5;border-radius:14px;padding:16px 12px;text-align:left;cursor:pointer;">
+                        <div style="margin-bottom:10px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:var(--brand);stroke-width:1.6;stroke-linecap:round;"><path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8M20 16v2.5A1.5 1.5 0 0 1 18.5 20H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></div>
+                        <div style="font-weight:700;font-size:13px;color:var(--app-ink);">Scan QR Tag</div>
+                        <div style="font-size:11px;color:var(--app-muted);margin-top:3px;">Attach tag to box</div>
+                      </button>
+                      <button onclick="addContainer('Digital Box')" style="background:var(--app-surf);border:1.5px dashed var(--app-border);border-radius:14px;padding:16px 12px;text-align:left;cursor:pointer;">
+                        <div style="margin-bottom:10px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:var(--app-muted);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg></div>
+                        <div style="font-weight:700;font-size:13px;color:var(--app-ink);">Digital Box</div>
+                        <div style="font-size:11px;color:var(--app-muted);margin-top:3px;">No tag needed</div>
+                      </button>
+                    </div>
+                    <div id="org-containers"></div>
+                  </div>
+                </div>
+
+                <!-- ADD ITEM -->
+                <div class="app-screen" id="screen-additem">
+                  <div style="background:var(--app-grad);padding:18px;font-family:'Inter',sans-serif;">
+                    <div class="screen-nav-row">
+                      <button class="back-btn" onclick="goScreen('organise')"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+                      <div>
+                        <div class="screen-nav-title">Add Item</div>
+                        <div style="font-size:11px;color:var(--app-muted2);" id="add-item-to">to "Container"</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="padding:16px 18px 20px;font-family:'Inter',sans-serif;">
+                    <div style="background:var(--app-surf2);border-radius:16px;height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;margin-bottom:16px;border:1.5px dashed var(--app-border);">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="stroke:var(--app-muted2);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h3l2-3h8l2 3h3a2 2 0 0 1 2 2v10z"/><circle cx="12" cy="13" r="3.5"/></svg>
+                      <div style="font-size:12px;color:var(--app-muted2);">Tap to take photo</div>
+                    </div>
+                    <input id="new-item-input" placeholder="Item name (e.g. Blue Jacket)" style="width:100%;border:1.5px solid var(--app-border);border-radius:11px;padding:11px 13px;font-size:14px;outline:none;font-family:'Inter',sans-serif;color:var(--app-ink);background:var(--app-bg);box-sizing:border-box;margin-bottom:12px;" oninput="this.style.borderColor=this.value?'var(--brand)':'var(--app-border)'"/>
+                    <button onclick="saveItem()" class="app-btn-primary">Save Item</button>
+                  </div>
+                </div>
+
+                <!-- SEARCH -->
+                <div class="app-screen" id="screen-search">
+                  <div class="app-search-screen">
+                    <div style="background:var(--app-grad);margin:0 -18px;padding:18px 18px 14px;font-family:'Inter',sans-serif;">
+                      <div style="font-weight:800;font-size:21px;color:var(--app-ink);letter-spacing:-.4px;">Find Anything</div>
+                    </div>
+                    <div class="search-input-wrap" style="margin-top:14px;">
+                      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                      <input id="search-q" placeholder="Search items by name…" oninput="doSearch()" style="font-family:'Inter',sans-serif;"/>
+                    </div>
+                    <div id="search-results"></div>
+                    <div class="smart-card" style="margin-top:4px;">
+                      <div class="smart-card-title">Smart Search</div>
+                      <div class="smart-card-sub">Search by occasion, season, or purpose. Unlock with a QR tag pack.</div>
+                      <div class="occasion-chips">
+                        <button class="occ-chip" onclick="goScreen('premium')">Holiday</button>
+                        <button class="occ-chip" onclick="goScreen('premium')">Travel</button>
+                        <button class="occ-chip" onclick="goScreen('premium')">Camping</button>
+                        <button class="occ-chip" onclick="goScreen('premium')">Work</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- PROFILE -->
+                <div class="app-screen" id="screen-profile">
+                  <div class="app-profile">
+                    <div class="profile-header">
+                      <div class="profile-avatar-row">
+                        <div class="profile-av"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="var(--brand)" stroke-width="1.6"/><path d="M4 20c0-3.314 3.582-6 8-6s8 2.686 8 6" stroke="var(--brand)" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+                        <div>
+                          <div class="profile-name">Sneha</div>
+                          <div class="profile-email">keepin user</div>
+                        </div>
+                      </div>
+                      <button class="upgrade-btn" onclick="goScreen('premium')">Upgrade to Premium</button>
+                    </div>
+                    <div class="profile-body">
+                      <button class="profile-item" onclick="goScreen('redeem')">
+                        <div class="profile-item-ic" style="background:var(--lav-bg);"><svg viewBox="0 0 24 24"><circle cx="8.5" cy="13.5" r="4.5"/><path d="M11.5 10.5L20 4M18 6l2 2M15 7l2 2"/></svg></div>
+                        <div style="flex:1;"><div class="profile-item-title">Redeem QR Tag Code</div><div class="profile-item-sub">Have a tag pack? Enter your code</div></div>
+                        <svg class="chev-ic" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+                      </button>
+                      <button class="profile-item" onclick="goScreen('gettags')">
+                        <div class="profile-item-ic"><svg viewBox="0 0 24 24"><rect x="2" y="13" width="9" height="9" rx="1.5"/><rect x="13" y="13" width="9" height="9" rx="1.5"/><rect x="7.5" y="2" width="9" height="9" rx="1.5"/></svg></div>
+                        <div style="flex:1;"><div class="profile-item-title">Get QR Tag Packs</div><div class="profile-item-sub">Buy on Amazon — includes Premium code</div></div>
+                        <svg class="chev-ic" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+                      </button>
+                      <button class="profile-item" onclick="goScreen('premium')">
+                        <div class="profile-item-ic"><svg viewBox="0 0 24 24"><path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7l2-7z"/></svg></div>
+                        <div style="flex:1;"><div class="profile-item-title">Premium Features</div><div class="profile-item-sub">Unlock AI features</div></div>
+                        <svg class="chev-ic" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- REDEEM -->
+                <div class="app-screen" id="screen-redeem">
+                  <div class="redeem-screen">
+                    <div style="background:var(--app-grad);margin:0 -18px;padding:18px;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:10px;">
+                      <button class="back-btn" onclick="goScreen('profile')"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+                      <div class="screen-nav-title">Redeem Code</div>
+                    </div>
+                    <div class="redeem-card">
+                      <div class="redeem-card-ic"><svg viewBox="0 0 24 24"><circle cx="8.5" cy="13.5" r="4.5"/><path d="M11.5 10.5L20 4M18 6l2 2M15 7l2 2"/></svg></div>
+                      <div style="font-weight:700;font-size:15px;color:var(--app-ink);font-family:'Inter',sans-serif;margin-bottom:6px;">Got a tag pack?</div>
+                      <div style="font-size:12.5px;color:var(--app-muted);line-height:1.6;font-family:'Inter',sans-serif;">Each pack includes a Premium code for a free week. Codes stack — more packs, more time.</div>
+                    </div>
+                    <div class="screen-lbl-sm">Your Code</div>
+                    <input id="redeem-input" class="code-input" placeholder="KEEPIN-XXXX-XXXX" oninput="this.value=this.value.toUpperCase()"/>
+                    <div style="font-size:12px;color:var(--app-muted2);font-family:'Inter',sans-serif;margin-bottom:18px;">Find in pack envelope or receipt email</div>
+                    <button class="app-btn-primary" onclick="doRedeem()">Activate</button>
+                    <button class="app-btn-ghost" onclick="goScreen('gettags')" style="margin-top:10px;">Get a tag pack on Amazon →</button>
+                  </div>
+                </div>
+
+                <!-- SUCCESS -->
+                <div class="app-screen" id="screen-success">
+                  <div class="success-screen">
+                    <div class="success-ic"><svg viewBox="0 0 24 24"><path d="M4 13l5 5L20 7"/></svg></div>
+                    <div style="font-weight:800;font-size:22px;color:var(--app-ink);font-family:'Inter',sans-serif;letter-spacing:-.4px;margin-bottom:8px;">Premium Activated!</div>
+                    <div style="color:var(--app-muted);font-size:13.5px;font-family:'Inter',sans-serif;line-height:1.7;margin-bottom:28px;">You have 7 days of Premium. AI recognition, smart search, and Ask are unlocked.</div>
+                    <button class="app-btn-primary" onclick="goScreen('home')">Start organising</button>
+                  </div>
+                </div>
+
+                <!-- GET TAGS -->
+                <div class="app-screen" id="screen-gettags">
+                  <div style="padding:0 18px 20px;font-family:'Inter',sans-serif;">
+                    <div style="background:var(--app-grad);margin:0 -18px;padding:18px;display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+                      <button class="back-btn" onclick="goScreen('profile')"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+                      <div>
+                        <div class="screen-nav-title">QR Tag Packs</div>
+                        <div style="font-size:11px;color:var(--app-muted2);">Sold on Amazon · ships to your door</div>
+                      </div>
+                    </div>
+                    <div style="margin-top:14px;">
+                      <div class="screen-lbl-sm">Choose a Pack</div>
+                      <div style="background:var(--app-surf);border:1.5px solid var(--brand);border-radius:14px;padding:14px;margin-bottom:10px;position:relative;">
+                        <div style="position:absolute;top:-9px;left:12px;background:var(--brand);color:#fff;font-size:9.5px;font-weight:700;padding:2px 10px;border-radius:20px;font-family:'Inter',sans-serif;">Most popular</div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                          <div><div style="font-weight:700;font-size:14px;color:var(--app-ink);">Mover Pack</div><div style="font-size:12px;color:var(--app-muted2);margin-top:1px;">30 QR Tags</div></div>
+                          <div style="font-weight:800;font-size:16px;color:var(--app-ink);">$39.99</div>
+                        </div>
+                        <div style="background:var(--lav-bg);border:1px solid #ddd0e8;border-radius:8px;padding:6px 10px;font-size:11.5px;color:var(--lav);margin-bottom:10px;font-family:'Inter',sans-serif;">Includes 3 weeks Premium</div>
+                        <button style="width:100%;background:var(--brand);color:#fff;border:none;border-radius:10px;padding:10px;font-weight:600;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;">Buy on Amazon →</button>
+                      </div>
+                      <div style="background:var(--app-surf);border:1px solid var(--app-border);border-radius:14px;padding:14px;margin-bottom:10px;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                          <div><div style="font-weight:700;font-size:14px;color:var(--app-ink);">Starter Pack</div><div style="font-size:12px;color:var(--app-muted2);margin-top:1px;">10 QR Tags</div></div>
+                          <div style="font-weight:800;font-size:16px;color:var(--app-ink);">$19.99</div>
+                        </div>
+                        <div style="background:var(--lav-bg);border:1px solid #ddd0e8;border-radius:8px;padding:6px 10px;font-size:11.5px;color:var(--lav);margin-bottom:10px;font-family:'Inter',sans-serif;">Includes 1 week Premium</div>
+                        <button style="width:100%;background:transparent;color:var(--brand);border:1.5px solid var(--brand);border-radius:10px;padding:9px;font-weight:600;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;">Buy on Amazon →</button>
+                      </div>
+                      <button class="app-btn-ghost" style="margin-top:6px;" onclick="goScreen('redeem')">Already have a code? Redeem →</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- PREMIUM -->
+                <div class="app-screen" id="screen-premium">
+                  <div style="padding:0 18px 20px;font-family:'Inter',sans-serif;">
+                    <div style="background:var(--app-grad);margin:0 -18px;padding:18px;display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+                      <button class="back-btn" onclick="goScreen('home')"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+                      <div class="screen-nav-title">Premium</div>
+                    </div>
+                    <div style="background:linear-gradient(135deg,#f7f0fb,#fef4f2,#fef9f0);border:1px solid var(--app-border);border-radius:18px;padding:20px;margin-top:14px;margin-bottom:20px;">
+                      <div style="font-weight:800;font-size:18px;color:var(--app-ink);letter-spacing:-.4px;margin-bottom:7px;">Let AI do the work. You just ask.</div>
+                      <div style="color:var(--app-muted);font-size:13px;line-height:1.7;">Identify items by photo, search by context, ask where anything is — in plain language.</div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
+                      <button onclick="goScreen('redeem')" style="background:var(--brand);color:#fff;border:none;border-radius:13px;padding:13px 10px;font-weight:600;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;">$7 / month</button>
+                      <button onclick="goScreen('redeem')" style="background:var(--app-surf);border:1.5px solid var(--brand);color:var(--brand);border-radius:13px;padding:13px 10px;font-weight:600;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;">$50 / year</button>
+                    </div>
+                    <div style="text-align:center;color:var(--app-muted2);font-size:12.5px;margin:14px 0 4px;font-family:'Inter',sans-serif;">Have a QR tag pack?</div>
+                    <button class="app-btn-ghost" onclick="goScreen('redeem')">Redeem free week →</button>
+                  </div>
+                </div>
+
+              </div><!-- end phone-screen -->
+
+              <!-- BOTTOM NAV -->
+              <div class="phone-nav-bar">
+                <button class="pnav-btn" id="pnav-home" onclick="goScreen('home')">
+                  <svg viewBox="0 0 24 24" id="pnav-home-ic"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                  <span class="pnav-lbl" style="font-family:'Inter',sans-serif;">Home</span>
+                </button>
+                <button class="pnav-btn" id="pnav-organise" onclick="goScreen('organise')">
+                  <svg viewBox="0 0 24 24" id="pnav-organise-ic"><rect x="2" y="13" width="9" height="9" rx="1.5"/><rect x="13" y="13" width="9" height="9" rx="1.5"/><rect x="7.5" y="2" width="9" height="9" rx="1.5"/></svg>
+                  <span class="pnav-lbl" style="font-family:'Inter',sans-serif;">Organise</span>
+                </button>
+                <button class="pnav-btn" id="pnav-search" onclick="goScreen('search')">
+                  <svg viewBox="0 0 24 24" id="pnav-search-ic"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                  <span class="pnav-lbl" style="font-family:'Inter',sans-serif;">Find</span>
+                </button>
+                <button class="pnav-btn" id="pnav-profile" onclick="goScreen('profile')">
+                  <svg viewBox="0 0 24 24" id="pnav-profile-ic"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.314 3.582-6 8-6s8 2.686 8 6"/></svg>
+                  <span class="pnav-lbl" style="font-family:'Inter',sans-serif;">Profile</span>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="spd-card">
-          <div class="spd-label">Inventory setup time</div>
-          <div class="spd-row"><span class="spd-name">Manual</span><div class="spd-bar"><div class="spd-fill" style="width:88%;background:var(--stone);"></div></div><span class="spd-t">Hours / days</span></div>
-          <div class="spd-row"><span class="spd-name k">Keepin</span><div class="spd-bar"><div class="spd-fill" style="width:9%;"></div></div><span class="spd-t">Minutes</span></div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" class="block reveal">
+      <span class="eyebrow">Features</span>
+      <h2 class="sec-h">Everything in one app.</h2>
+      <p class="sec-sub">Visual AI, a chatbot, smart suggestions, and optional physical tags — all in one simple experience.</p>
+      <div class="feat-list">
+        <div class="feat-item"><div class="fi-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div><h3>Visual AI Recognition</h3><p>Patent-pending tech identifies items from your camera alone. No barcodes, stickers, or typing. Even knows which container you're using.</p></div>
+        <div class="feat-item"><div class="fi-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><h3>Conversational AI Chatbot</h3><p>Ask in plain English: "Where's my passport?" Works with Alexa and Google Home so you can ask out loud from any room.</p></div>
+        <div class="feat-item"><div class="fi-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><h3>Virtual Rummage Mode</h3><p>Scroll through your drawers and shelves on screen before physically searching. Browse space by space from the couch.</p></div>
+        <div class="feat-item"><div class="fi-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div><h3>Calendar &amp; Weather Sync</h3><p>Keepin checks your schedule and forecast, then proactively surfaces what you'll need. Rain today? Umbrella reminder.</p></div>
+        <div class="feat-item"><div class="fi-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><h3>Learns Your Habits</h3><p>Gets smarter over time. Boots you always wear with blue jeans? Keepin learns the pairing and suggests it automatically.</p></div>
+        <div class="feat-item"><div class="fi-icon"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div><h3>Smart Containers &amp; Tags</h3><p>Optional stackable containers with QR and NFC stickers. Keepin auto-detects which container you're using — no typing.</p></div>
+        <div class="feat-item"><div class="fi-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h3>Household Sharing</h3><p>Invite family members. If your partner puts something away, everyone can find it — shared memory for the whole household.</p></div>
+        <div class="feat-item"><div class="fi-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><h3>Private &amp; Encrypted</h3><p>Your data is encrypted and never shared without permission. You fully control who has access — always.</p></div>
+      </div>
+    </section>
+
+    <!-- FOR HOME -->
+    <section id="for-home" class="block reveal">
+      <span class="eyebrow">For Home</span>
+      <h2 class="sec-h">Your home, finally organised.</h2>
+      <p class="sec-sub">From finding keys at 8am to remembering what's inside every box in the garage — Keepin has an answer in under 5 seconds.</p>
+      <div class="stats-card">
+        <div class="stats-top">
+          <div class="st-l"><h2>Stop wasting days searching for things you own.</h2><div style="margin-top:20px;display:flex;gap:9px;flex-wrap:wrap;"><a href="#" class="btn btn-primary" style="font-size:14px;padding:10px 20px;">Download the App</a><a href="#how-it-works" class="btn btn-secondary" style="font-size:14px;padding:10px 20px;">How It Works</a></div></div>
+          <div class="st-r"><p>Lost items aren't just annoying — they're a daily tax on your time, money, and sanity. Keepin is the first app to solve this completely: point your camera as you put things away and it remembers everything — so you never have to.</p></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-box"><div class="stat-n">60%</div><p>of Americans report being late due to searching for something</p></div>
+          <div class="stat-box"><div class="stat-n">2.5</div><p>days per year the average person wastes searching for items</p></div>
+          <div class="stat-box"><div class="stat-n">1 in 3</div><p>people never find a lost item ever again</p></div>
+          <div class="stat-box"><div class="stat-n">$5B+</div><p>worth of items lost in the US every year</p></div>
+          <div class="stat-box"><div class="stat-n">200</div><p>days spent searching over an entire lifetime</p></div>
         </div>
       </div>
-      <table class="cmp-table">
-        <thead><tr><th>Feature</th><th class="col-k">Keepin™</th><th class="col-o">Barcode Scanners</th><th class="col-o">Spreadsheets</th></tr></thead>
-        <tbody>
-          <tr><td>Visual AI recognition (no tags)</td><td class="col-k ck">✓</td><td class="col-o cx">—</td><td class="col-o cx">—</td></tr>
-          <tr><td>Conversational AI retrieval</td><td class="col-k ck">✓</td><td class="col-o cx">—</td><td class="col-o cx">—</td></tr>
-          <tr><td>Works for home & business</td><td class="col-k ck">✓</td><td class="col-o cx">—</td><td class="col-o" style="color:var(--muted2)">Manual</td></tr>
-          <tr><td>Zero manual data entry</td><td class="col-k ck">✓</td><td class="col-o cx">—</td><td class="col-o cx">—</td></tr>
-          <tr><td>Calendar & weather sync</td><td class="col-k ck">✓</td><td class="col-o cx">—</td><td class="col-o cx">—</td></tr>
-          <tr><td>Free tier available</td><td class="col-k ck">✓</td><td class="col-o cx">—</td><td class="col-o ck">✓</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- FEATURES -->
-<section style="background:var(--white);">
-  <div class="container">
-    <div class="sec-tag reveal">Features</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:end;">
-      <h2 class="sec-h serif reveal">One platform replaces your<br/><em>entire item-tracking stack</em></h2>
-      <p class="sec-sub reveal reveal-delay-1">More than just item storage — Keepin manages the full lifecycle of every item you own, from first scan to instant retrieval.</p>
-    </div>
-    <div class="feat-grid">
-      <div class="feat-cell span2 blur-card">
-        <div class="fc-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
-        <h3>AI Visual Recognition — Zero Tags Required</h3>
-        <p>Our patent-pending computer vision identifies items in real time from your phone camera alone. No barcodes, no stickers, no setup friction. Simply hold the item as you put it away and Keepin does the rest — a completely tag-free experience from day one. It even knows which numbered container you're placing items into automatically.</p>
-      </div>
-      <div class="feat-cell blur-card">
-        <div class="fc-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-        <h3>Conversational AI Retrieval</h3>
-        <p>Ask in plain English — "Where's my red jacket?" Keepin responds like a personal assistant who was watching the whole time. Works with Alexa and Google Home too.</p>
-      </div>
-      <div class="feat-cell blur-card">
-        <div class="fc-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
-        <h3>Virtual Rummage Mode</h3>
-        <p>Scroll through a whole drawer or closet visually on your phone before physically searching. Browse shelf by shelf, box by box — without leaving your couch.</p>
-      </div>
-      <div class="feat-cell blur-card">
-        <div class="fc-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
-        <h3>Smart Calendar & Weather Sync</h3>
-        <p>Keepin checks your schedule and local forecast, then suggests what you'll need. Rain Tuesday? Umbrella reminder. Big hike Saturday? Gear list surfaces automatically.</p>
-      </div>
-      <div class="feat-cell blur-card">
-        <div class="fc-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-        <h3>Learns Your Preferences</h3>
-        <p>AI that remembers what you love. Favorite boots you always wear with blue jeans? Keepin learns and surfaces the pairing automatically, getting smarter with every use.</p>
-      </div>
-      <div class="feat-cell blur-card">
-        <div class="fc-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-        <h3>Private & Encrypted</h3>
-        <p>Everything you show Keepin is protected with advanced encryption. Nothing leaves your account without your permission. Shared access is fully controlled by you.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="div"/>
-
-<!-- B2B -->
-<section id="b2b">
-  <div class="container">
-    <div class="sec-tag reveal">For Business</div>
-    <div class="b2b-shell reveal reveal-delay-1">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;">
-        <h2 class="sec-h serif">Keepin for warehouses,<br/>job sites & teams.</h2>
-        <p style="font-size:15px;color:var(--muted);line-height:1.8;padding-top:6px;">Whether you're managing a warehouse floor, a multi-site construction project, or a shared office — Keepin's enterprise-grade inventory intelligence gives your team instant answers and managers real-time visibility.</p>
-      </div>
+    <!-- FOR BUSINESS -->
+    <section id="for-business" class="block reveal">
+      <span class="eyebrow">For Business</span>
+      <h2 class="sec-h">From warehouses to job sites.</h2>
+      <p class="sec-sub">The same app that remembers your keys gives your team real-time inventory visibility — without scanners or spreadsheets.</p>
       <div class="b2b-tabs">
-        <button class="tb active" onclick="showTab('wh',this)">Warehouses</button>
-        <button class="tb" onclick="showTab('con',this)">Construction</button>
-        <button class="tb" onclick="showTab('off',this)">Offices & Teams</button>
-        <button class="tb" onclick="showTab('prop',this)">Property Managers</button>
+        <button class="ttab active" onclick="showB2B('wh',this)">Warehouses</button>
+        <button class="ttab" onclick="showB2B('con',this)">Construction</button>
+        <button class="ttab" onclick="showB2B('off',this)">Offices</button>
+        <button class="ttab" onclick="showB2B('prop',this)">Property Managers</button>
       </div>
-      <div class="b2b-panel active" id="tab-wh">
-        <div>
-          <h3>Stop hunting for inventory. Know where everything is — instantly.</h3>
-          <p>Warehouses lose thousands of hours annually to misplaced pallets, mislabeled bins, and outdated spreadsheets. Keepin creates a living, real-time map of your entire floor — updated automatically every time an item moves.</p>
-          <ul class="b2b-list">
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>AI camera identification replaces manual barcode scanning</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Real-time tracking across all zones, aisles & shelves</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Instant voice or text retrieval: "Where's SKU-4421?"</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Automated low-stock and misplacement alerts</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Multi-user team access with role-based permissions</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Full audit trail and movement history per item</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>WMS and ERP integration-ready API</li>
-          </ul>
-          <a href="#" class="btn btn-dark" style="margin-top:24px;">Book a Warehouse Demo</a>
-        </div>
-        <div class="b2b-vis">
-          <div class="b2b-m"><div class="ml">Average item search time reduced</div><div class="mv">−73%</div></div>
-          <div class="b2b-m"><div class="ml">Productivity recovered per team / year</div><div class="mv">340+ hrs</div></div>
-          <div class="b2b-m"><div class="ml">Inventory accuracy improvement</div><div class="mv">99.4%</div></div>
-          <div class="b2b-q">"We went from hunting for pallets for 20 minutes to finding anything in under 30 seconds."<br/><strong style="color:var(--text);font-style:normal;font-size:12px;">— Warehouse Ops Manager</strong></div>
-        </div>
+      <div class="b2b-panel active" id="b2b-wh">
+        <div><h3>Stop hunting for inventory. Know instantly.</h3><p>Warehouses lose thousands of hours to misplaced pallets and outdated spreadsheets. Keepin creates a real-time map of your entire floor.</p><ul class="b2b-check"><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>AI camera replaces manual barcode scanning</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Real-time tracking across zones, aisles &amp; shelves</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Voice/text search: "Where's SKU-4421?"</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Automated misplacement and low-stock alerts</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Multi-user access with role permissions</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>WMS and ERP integration-ready API</li></ul><a href="#" class="btn btn-primary" style="margin-top:18px;font-size:14px;padding:10px 20px;">Book Warehouse Demo</a></div>
+        <div class="b2b-vis"><div class="b2b-m"><div class="ml">Item search time reduced</div><div class="mv">−73%</div></div><div class="b2b-m"><div class="ml">Productivity recovered / year</div><div class="mv">340+ hrs</div></div><div class="b2b-m"><div class="ml">Inventory accuracy</div><div class="mv">99.4%</div></div><div class="b2b-q">"We went from 20-minute pallet hunts to finding anything in 30 seconds."<br/><strong style="font-style:normal;color:var(--text);font-size:11.5px;">— Warehouse Ops Manager</strong></div></div>
       </div>
-      <div class="b2b-panel" id="tab-con">
-        <div>
-          <h3>Every tool accounted for. Every job site under control.</h3>
-          <p>Construction companies lose an estimated $1B+ annually to misplaced tools. Keepin tracks every drill, cord, and material across multiple job sites — giving crews instant answers and managers full visibility.</p>
-          <ul class="b2b-list">
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Visual tool check-in / check-out with photo verification</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Multi-site tracking across different job locations</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Equipment assignment by crew member, trade, or phase</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Lost or left-behind tool instant alerts</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Owned vs. rented asset differentiation</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>End-of-day accountability reporting per site</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Integrates with Procore and project management tools</li>
-          </ul>
-          <a href="#" class="btn btn-dark" style="margin-top:24px;">Book a Construction Demo</a>
-        </div>
-        <div class="b2b-vis">
-          <div class="b2b-m"><div class="ml">Tools reported lost per quarter</div><div class="mv">−61%</div></div>
-          <div class="b2b-m"><div class="ml">Average cost savings per site / year</div><div class="mv">$28K</div></div>
-          <div class="b2b-m"><div class="ml">Tool checkout disputes eliminated</div><div class="mv">100%</div></div>
-          <div class="b2b-q">"We used to end every Friday arguing about where equipment went. Now we just open Keepin and it's settled in seconds."<br/><strong style="color:var(--text);font-style:normal;font-size:12px;">— General Contractor, Texas</strong></div>
-        </div>
+      <div class="b2b-panel" id="b2b-con">
+        <div><h3>Every tool. Every site. Under control.</h3><p>Construction firms lose $1B+ annually to misplaced equipment. Keepin tracks every drill and material across multiple sites.</p><ul class="b2b-check"><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Visual check-in / check-out with photo verification</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Multi-site tracking across locations</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Equipment assignment by crew or phase</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Instant alerts for left-behind tools</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Owned vs. rented asset differentiation</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>End-of-day site accountability report</li></ul><a href="#" class="btn btn-primary" style="margin-top:18px;font-size:14px;padding:10px 20px;">Book Construction Demo</a></div>
+        <div class="b2b-vis"><div class="b2b-m"><div class="ml">Tools lost per quarter</div><div class="mv">−61%</div></div><div class="b2b-m"><div class="ml">Cost savings per site / year</div><div class="mv">$28,000</div></div><div class="b2b-m"><div class="ml">Checkout disputes eliminated</div><div class="mv">100%</div></div><div class="b2b-q">"We used to argue every Friday about where equipment went. Keepin settled it in seconds."<br/><strong style="font-style:normal;color:var(--text);font-size:11.5px;">— General Contractor, Texas</strong></div></div>
       </div>
-      <div class="b2b-panel" id="tab-off">
-        <div>
-          <h3>Office inventory that manages itself.</h3>
-          <p>From AV equipment to shared supplies — Keepin gives every team member instant answers and managers full visibility, without a single spreadsheet.</p>
-          <ul class="b2b-list">
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Shared asset tracking: laptops, cameras, projectors</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Supply room inventory with automated restock alerts</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>In-app reserve & request system for shared items</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Usage analytics and full audit logs</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>SSO and enterprise access control</li>
-          </ul>
-          <a href="#" class="btn btn-dark" style="margin-top:24px;">Book a Team Demo</a>
-        </div>
-        <div class="b2b-vis">
-          <div class="b2b-m"><div class="ml">Time spent locating shared items</div><div class="mv">−80%</div></div>
-          <div class="b2b-m"><div class="ml">Lost or unreturned equipment</div><div class="mv">−90%</div></div>
-          <div class="b2b-m"><div class="ml">Supply over-ordering cost reduction</div><div class="mv">35%</div></div>
-          <div class="b2b-q">"We stopped buying duplicate supplies because nobody knew what we had. Keepin paid for itself in month one."<br/><strong style="color:var(--text);font-style:normal;font-size:12px;">— Office Manager</strong></div>
-        </div>
+      <div class="b2b-panel" id="b2b-off">
+        <div><h3>Office inventory that manages itself.</h3><p>From AV equipment to supplies — give every team member instant answers and managers full visibility, without spreadsheets.</p><ul class="b2b-check"><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Shared asset tracking: laptops, cameras, projectors</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Supply room inventory with restock alerts</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>In-app reservation and request system</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Usage analytics and full audit logs</li></ul><a href="#" class="btn btn-primary" style="margin-top:18px;font-size:14px;padding:10px 20px;">Book Team Demo</a></div>
+        <div class="b2b-vis"><div class="b2b-m"><div class="ml">Time locating shared items</div><div class="mv">−80%</div></div><div class="b2b-m"><div class="ml">Lost/unreturned equipment</div><div class="mv">−90%</div></div><div class="b2b-m"><div class="ml">Supply over-ordering</div><div class="mv">−35%</div></div><div class="b2b-q">"We stopped buying duplicates because nobody knew what we had. Keepin paid for itself in month one."<br/><strong style="font-style:normal;color:var(--text);font-size:11.5px;">— Office Manager</strong></div></div>
       </div>
-      <div class="b2b-panel" id="tab-prop">
-        <div>
-          <h3>Manage every unit's inventory across your entire portfolio.</h3>
-          <p>Track fixtures, appliances, furniture, and maintenance tools across multiple units — reducing replacement costs and tenant disputes with a full visual inventory record.</p>
-          <ul class="b2b-list">
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Unit-by-unit inventory with photo documentation</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Move-in / move-out visual asset comparison</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Maintenance tool tracking for on-site staff</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Damage vs. wear documentation with timestamps</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Multi-property dashboard for portfolio managers</li>
-          </ul>
-          <a href="#" class="btn btn-dark" style="margin-top:24px;">Book a Property Demo</a>
-        </div>
-        <div class="b2b-vis">
-          <div class="b2b-m"><div class="ml">Move-out dispute resolution time</div><div class="mv">−85%</div></div>
-          <div class="b2b-m"><div class="ml">Replacement costs from undocumented damage</div><div class="mv">−42%</div></div>
-          <div class="b2b-m"><div class="ml">Maintenance tool accountability</div><div class="mv">100%</div></div>
-          <div class="b2b-q">"Keepin is the first thing I set up in every new unit. It protects me legally and saves thousands every turnover."<br/><strong style="color:var(--text);font-style:normal;font-size:12px;">— Property Manager, 12 units</strong></div>
-        </div>
+      <div class="b2b-panel" id="b2b-prop">
+        <div><h3>Document every unit. Protect every dispute.</h3><p>Track fixtures, appliances, and tools across multiple units — reducing costs with a full timestamped visual record.</p><ul class="b2b-check"><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Unit-by-unit inventory with timestamped photos</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Move-in / move-out asset comparison</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Damage vs. wear documentation</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Multi-property dashboard</li></ul><a href="#" class="btn btn-primary" style="margin-top:18px;font-size:14px;padding:10px 20px;">Book Property Demo</a></div>
+        <div class="b2b-vis"><div class="b2b-m"><div class="ml">Dispute resolution time</div><div class="mv">−85%</div></div><div class="b2b-m"><div class="ml">Undocumented damage costs</div><div class="mv">−42%</div></div><div class="b2b-m"><div class="ml">Tool accountability</div><div class="mv">100%</div></div><div class="b2b-q">"Keepin is the first thing I set up in every new unit. Saves thousands each turnover."<br/><strong style="font-style:normal;color:var(--text);font-size:11.5px;">— Property Manager, 12 units</strong></div></div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- WHO -->
-<section style="background:var(--white);">
-  <div class="container">
-    <div class="sec-tag reveal">Who It's For</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:end;">
-      <h2 class="sec-h serif reveal">Whether it's your closet<br/>or your <em>warehouse</em> — Keepin adapts.</h2>
-      <p class="sec-sub reveal reveal-delay-1">For every lifestyle, household, and industry. Scales from a single bedroom to a 100,000 sq ft distribution center.</p>
-    </div>
-    <div class="who-grid">
-      <div class="who-card hl reveal"><div class="wc-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><h3>Homeowners</h3><p>Never search your home again.</p></div>
-      <div class="who-card reveal reveal-delay-1"><div class="wc-icon"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div><h3>Warehouses</h3><p>Real-time floor inventory without barcodes.</p></div>
-      <div class="who-card reveal reveal-delay-2"><div class="wc-icon"><svg viewBox="0 0 24 24"><path d="M2 20h20M4 20V10l8-7 8 7v10"/></svg></div><h3>Construction</h3><p>Tool accountability across every job site.</p></div>
-      <div class="who-card reveal reveal-delay-3"><div class="wc-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h3>Families</h3><p>Shared household memory for everyone.</p></div>
-      <div class="who-card reveal"><div class="wc-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/></svg></div><h3>Offices & Teams</h3><p>Shared assets with zero manual tracking.</p></div>
-      <div class="who-card reveal reveal-delay-1"><div class="wc-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><h3>Property Managers</h3><p>Document every unit, protect every dispute.</p></div>
-      <div class="who-card reveal reveal-delay-2"><div class="wc-icon"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div><h3>Contractors</h3><p>Know what tools are on which site, always.</p></div>
-      <div class="who-card reveal reveal-delay-3"><div class="wc-icon"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></div><h3>Students</h3><p>Dorm rooms and study supplies organized.</p></div>
-    </div>
-  </div>
-</section>
+    <!-- WHO USES IT -->
+    <section id="who-uses-it" class="block reveal">
+      <span class="eyebrow">Who Uses It</span>
+      <h2 class="sec-h">One app. Every kind of space.</h2>
+      <p class="sec-sub">From a single bedroom to a 100,000 sq ft warehouse — Keepin adapts to your life and industry.</p>
+      <div class="who-grid">
+        <div class="who-card dark"><div class="wc-ic"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><h3>Homeowners</h3><p>Whole home, remembered.</p></div>
+        <div class="who-card"><div class="wc-ic"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><h3>Families</h3><p>Shared memory for everyone.</p></div>
+        <div class="who-card"><div class="wc-ic"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div><h3>Warehouses</h3><p>Real-time floor inventory.</p></div>
+        <div class="who-card"><div class="wc-ic"><svg viewBox="0 0 24 24"><path d="M2 20h20M4 20V10l8-7 8 7v10"/></svg></div><h3>Construction</h3><p>Every tool, every site.</p></div>
+        <div class="who-card"><div class="wc-ic"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/></svg></div><h3>Offices</h3><p>Assets, zero spreadsheets.</p></div>
+        <div class="who-card"><div class="wc-ic"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><h3>Property Managers</h3><p>Document every unit.</p></div>
+        <div class="who-card"><div class="wc-ic"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div><h3>Contractors</h3><p>Multi-site tool tracking.</p></div>
+        <div class="who-card"><div class="wc-ic"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></div><h3>Students</h3><p>Dorms and study supplies.</p></div>
+      </div>
+    </section>
 
-<!-- TESTIMONIALS -->
-<section>
-  <div class="container">
-    <div class="sec-tag reveal">What People Say</div>
-    <h2 class="sec-h serif reveal">Real people.<br/><em>Real relief.</em></h2>
-    <div class="test-grid">
-      <div class="tc reveal">
-        <div class="tc-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-        <blockquote>"I used to spend 20 minutes every morning looking for my things. Now I just ask Keepin and I'm out the door in 5. It genuinely changed my routine."</blockquote>
-        <div class="tc-author"><div class="tc-av">M</div><div><div class="tc-name">Maria T.</div><div class="tc-role">Busy mom of 3, Chicago</div></div></div>
+    <!-- COMPARE -->
+    <section id="compare" class="block reveal">
+      <span class="eyebrow">Why Keepin</span>
+      <h2 class="sec-h">The only app that does this.</h2>
+      <p class="sec-sub">Every other solution requires manual work. Keepin does it for you — zero friction from day one.</p>
+      <div class="cmp-wrap">
+        <table class="cmp-tbl">
+          <thead>
+            <tr>
+              <th style="width:36%;">Capability</th>
+              <th class="c k k-col">Keepin™</th>
+              <th class="c">Barcode Apps</th>
+              <th class="c">Spreadsheets</th>
+              <th class="c">Sticky Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Visual AI — no typing or scanning</td><td class="c k-col"><span class="ck">✓</span></td><td class="c"><span class="cx">—</span></td><td class="c"><span class="cx">—</span></td><td class="c"><span class="cx">—</span></td></tr>
+            <tr><td>Ask in plain English</td><td class="c k-col"><span class="ck">✓</span></td><td class="c"><span class="cx">—</span></td><td class="c"><span class="cx">—</span></td><td class="c"><span class="cx">—</span></td></tr>
+            <tr><td>Works for home and business</td><td class="c k-col"><span class="ck">✓</span></td><td class="c"><span class="cx">—</span></td><td class="c" style="color:#aeaeb2;font-size:12px;">Manual</td><td class="c"><span class="cx">—</span></td></tr>
+            <tr><td>Zero manual data entry</td><td class="c k-col"><span class="ck">✓</span></td><td class="c"><span class="cx">—</span></td><td class="c"><span class="cx">—</span></td><td class="c"><span class="cx">—</span></td></tr>
+            <tr><td>Smart AI suggestions</td><td class="c k-col"><span class="ck">✓</span></td><td class="c"><span class="cx">—</span></td><td class="c"><span class="cx">—</span></td><td class="c"><span class="cx">—</span></td></tr>
+            <tr><td>Free to download</td><td class="c k-col"><span class="ck">✓</span></td><td class="c"><span class="cx">—</span></td><td class="c"><span class="ck">✓</span></td><td class="c"><span class="ck">✓</span></td></tr>
+          </tbody>
+        </table>
       </div>
-      <div class="tc reveal reveal-delay-1">
-        <div class="tc-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-        <blockquote>"We used to argue constantly about where equipment went on site. Keepin ended that. Every tool accounted for, every day."</blockquote>
-        <div class="tc-author"><div class="tc-av">J</div><div><div class="tc-name">James R.</div><div class="tc-role">General Contractor, Texas</div></div></div>
-      </div>
-      <div class="tc reveal reveal-delay-2">
-        <div class="tc-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-        <blockquote>"Our warehouse picking speed improved 40% after switching to Keepin. No more walking the floor hunting for pallets logged wrong."</blockquote>
-        <div class="tc-author"><div class="tc-av">D</div><div><div class="tc-name">Dana W.</div><div class="tc-role">Ops Manager, Distribution Co.</div></div></div>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- PRICING -->
-<section style="background:var(--cream2);">
-  <div class="container">
-    <div class="sec-tag reveal">Pricing</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:end;margin-bottom:48px;">
-      <h2 class="sec-h serif reveal">Simple pricing.<br/><em>Serious value.</em></h2>
-      <p class="sec-sub reveal reveal-delay-1">Start free and upgrade when you're ready. Our containers are priced like others in major retailers — using Keepin costs you nothing extra.</p>
-    </div>
-    <div class="price-grid">
-      <div class="pc reveal">
-        <h3>Free</h3><div class="pc-desc">For individuals getting started</div>
-        <div class="pc-price">$0<sub>/mo</sub></div><div class="pc-div"></div>
-        <ul class="pc-feats">
-          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Up to 200 items tracked</li>
-          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Visual AI recognition</li>
-          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Conversational chatbot</li>
-          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>1 household member</li>
-          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Supported by ads</li>
-        </ul>
-        <a href="#" class="btn btn-ghost" style="margin-top:24px;display:block;text-align:center;">Get Started Free</a>
+    <!-- TESTIMONIALS -->
+    <section id="testimonials" class="block reveal">
+      <span class="eyebrow">Reviews</span>
+      <h2 class="sec-h">What real users say.</h2>
+      <div class="test-row">
+        <div class="tc"><div class="tc-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><blockquote>"I used to spend 20 minutes every morning looking for things. Now I just ask Keepin and I'm out the door in five."</blockquote><div class="tc-auth"><div class="tc-av">M</div><div><div class="tc-nm">Maria T.</div><div class="tc-rl">Mom of 3, Chicago</div></div></div></div>
+        <div class="tc"><div class="tc-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><blockquote>"We used to argue every Friday about where equipment went. Now we open Keepin and it's settled in 30 seconds."</blockquote><div class="tc-auth"><div class="tc-av">J</div><div><div class="tc-nm">James R.</div><div class="tc-rl">General Contractor, Texas</div></div></div></div>
+        <div class="tc"><div class="tc-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><blockquote>"Our warehouse picking speed improved 40% after switching to Keepin. No more hunting for pallets logged in the wrong aisle."</blockquote><div class="tc-auth"><div class="tc-av">D</div><div><div class="tc-nm">Dana W.</div><div class="tc-rl">Ops Manager, Distribution Co.</div></div></div></div>
       </div>
-      <div class="pc hl reveal reveal-delay-1">
-        <div class="pop-badge">Most Popular</div>
-        <h3>Personal Pro</h3><div class="pc-desc">For households who want it all</div>
-        <div class="pc-price">$7<sub>/mo</sub></div><div class="pc-div"></div>
-        <ul class="pc-feats">
-          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Unlimited items tracked</li>
-          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Up to 5 household members</li>
-          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Calendar & weather sync</li>
-          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Smart outfit & task suggestions</li>
-          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Virtual rummage mode</li>
-          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Smart speaker sync</li>
-          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Ad-free experience</li>
-        </ul>
-        <a href="#" class="btn btn-white" style="margin-top:24px;display:block;text-align:center;border:none;">Start Free Trial</a>
-      </div>
-      <div class="pc reveal reveal-delay-2">
-        <h3>Business</h3><div class="pc-desc">For warehouses, job sites & teams</div>
-        <div class="pc-price" style="font-size:28px;letter-spacing:-.5px;">Custom</div><div class="pc-div"></div>
-        <ul class="pc-feats">
-          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Unlimited items & locations</li>
-          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Unlimited team members</li>
-          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Multi-site dashboard</li>
-          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Role-based access control</li>
-          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>WMS / ERP integrations</li>
-          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Audit trail & reporting</li>
-          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Dedicated account manager</li>
-        </ul>
-        <a href="#" class="btn btn-ghost" style="margin-top:24px;display:block;text-align:center;">Book a Demo</a>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- CTA -->
-<section style="padding:80px;">
-  <div style="max-width:1080px;margin:0 auto;">
-    <div class="cta-wrap reveal">
-      <h2>Stop losing things.<br/><em>Start keepin™ them.</em></h2>
-      <p>Join people and businesses who've discovered what it's like to always know exactly where everything is.</p>
+    <!-- PRICING -->
+    <section id="pricing" class="block reveal">
+      <span class="eyebrow">Pricing</span>
+      <h2 class="sec-h">Download free. Upgrade when ready.</h2>
+      <p class="sec-sub">Our smart containers are priced like any retailer bin — so using Keepin with them is essentially free.</p>
+      <div class="price-grid">
+        <div class="pc"><h3>Free</h3><div class="pc-d">For individuals getting started</div><div class="pc-p">$0<sub>/mo</sub></div><div class="pc-div"></div><ul class="pc-feats"><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Up to 200 items</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Visual AI recognition</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>AI chatbot</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>1 household member</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Ad-supported</li></ul><a href="#" class="btn btn-secondary" style="margin-top:18px;display:block;text-align:center;font-size:14px;border-radius:50px;">Download Free</a></div>
+        <div class="pc featured"><div class="pop-tag">Most Popular</div><h3>Personal Pro</h3><div class="pc-d">For households who want everything</div><div class="pc-p">$7<sub>/mo</sub></div><div class="pc-div"></div><ul class="pc-feats"><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Unlimited items</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Up to 5 household members</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Calendar &amp; weather sync</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Smart suggestions</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Virtual rummage mode</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Smart speaker sync</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Ad-free</li></ul><a href="#" class="btn btn-primary" style="margin-top:18px;display:block;text-align:center;font-size:14px;border-radius:50px;">Start Free Trial</a></div>
+        <div class="pc"><h3>Business</h3><div class="pc-d">For teams &amp; warehouses</div><div class="pc-p" style="font-size:22px;letter-spacing:0;">Custom</div><div class="pc-div"></div><ul class="pc-feats"><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Unlimited items &amp; locations</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Unlimited team members</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Multi-site dashboard</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Role-based permissions</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>WMS / ERP integrations</li><li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Audit trail &amp; reporting</li></ul><a href="#" class="btn btn-secondary" style="margin-top:18px;display:block;text-align:center;font-size:14px;border-radius:50px;">Contact Sales</a></div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="block reveal">
+      <span class="eyebrow">FAQ</span>
+      <h2 class="sec-h">Common questions.</h2>
+      <p class="sec-sub">Everything you need to know before downloading.</p>
+      <div class="faq-list">
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How does Keepin identify items without barcodes?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="faq-a">Keepin uses patent-pending computer vision AI that identifies objects directly from your phone's camera — the way a person would recognise them visually. Point your camera at an item as you put it away and the AI identifies it automatically. No barcodes, stickers, or manual input needed.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Do I need to buy the special containers or tags?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="faq-a">No. Keepin works completely without any special containers or tags. The optional QR/NFC stickers and stackable containers are available if you want to speed things up — but they're entirely optional and priced like any container at a regular retailer.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can multiple family members use the same account?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="faq-a">Yes. With Personal Pro, up to 5 household members share the same space. If your partner puts something away, everyone can find it — through the app or by asking Alexa or Google Home.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does it work with Alexa or Google Home?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="faq-a">Yes. Keepin integrates with Amazon Alexa and Google Home so you can ask questions out loud and get instant spoken answers from anywhere in your home.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is my data private and secure?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="faq-a">Yes. Everything is protected with advanced encryption. Your data is never shared with third parties, and you control exactly who in your household has access. Nothing leaves your account without your explicit permission.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">When will the app be fully available?<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="faq-a">Keepin is currently in beta. Early access is available now on iOS, with Android coming soon. Full public launch is planned for this year following beta testing and manufacturing of the optional container products.</div></div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="cta-banner reveal">
+      <h2>Start finding everything faster.</h2>
+      <p>Download the app free and build your item memory in minutes.</p>
       <div class="cta-btns">
-        <a href="#" class="btn btn-white btn-lg">Get Early Access — It's Free</a>
-        <a href="#" class="btn btn-wout btn-lg">Book a Business Demo</a>
+        <a href="#" class="btn btn-w">Download on iOS</a>
+        <a href="#" class="btn btn-wo">Get Android Early Access</a>
       </div>
-      <p style="font-size:12px;opacity:.3;margin-top:18px;">Patent-pending technology · No credit card required · iOS & Android</p>
+      <p style="font-size:12px;opacity:.3;margin-top:14px;">Patent-pending · Free to download · No credit card needed</p>
     </div>
-  </div>
-</section>
+
+  </main>
+</div>
 
 <!-- FOOTER -->
 <footer>
-  <div class="ft-grid">
-    <div>
-      <div class="ft-brand">keepin™</div>
-      <div class="ft-desc">AI-powered item tracking for homes, warehouses, and job sites. Patent-pending visual recognition technology.</div>
-      <div class="ft-email">contact@keepin.ai</div>
+  <div class="ft-wrap">
+    <div class="ft-grid">
+      <div><div class="ft-brand">keepin™</div><div class="ft-desc">AI-powered item tracking for homes, warehouses, and job sites. Currently in beta. Patent-pending.</div><div style="font-size:12.5px;color:var(--muted);margin-top:9px;">contact@keepin.ai</div></div>
+      <div class="ft-col"><h4>App</h4><a href="#">Download iOS</a><a href="#">Android Access</a><a href="#features">Features</a><a href="#">Smart Containers</a><a href="#pricing">Pricing</a></div>
+      <div class="ft-col"><h4>Business</h4><a href="#for-business">Warehouses</a><a href="#for-business">Construction</a><a href="#for-business">Offices</a><a href="#for-business">Property Managers</a><a href="#">Contact Sales</a></div>
+      <div class="ft-col"><h4>Company</h4><a href="#">About</a><a href="#">Blog</a><a href="#">Careers</a><a href="#">Privacy Policy</a><a href="#">Terms</a></div>
     </div>
-    <div class="ft-col"><h4>Product</h4><a href="#">How It Works</a><a href="#">Features</a><a href="#">Pricing</a><a href="#">Smart Containers</a><a href="#">Download App</a></div>
-    <div class="ft-col"><h4>Business</h4><a href="#">Warehouses</a><a href="#">Construction</a><a href="#">Offices & Teams</a><a href="#">Property Managers</a><a href="#">Book a Demo</a></div>
-    <div class="ft-col"><h4>Company</h4><a href="#">About</a><a href="#">Blog</a><a href="#">Careers</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div>
+    <div class="ft-bottom"><span>© 2026 Keepin™ AI Corp. All rights reserved. Patent Pending.</span><span style="display:flex;gap:16px;"><a href="#" style="color:var(--muted2);text-decoration:none;">Privacy</a><a href="#" style="color:var(--muted2);text-decoration:none;">Terms</a></span></div>
   </div>
-  <div class="ft-bottom"><span>© 2026 Keepin™ AI Corp. Patent Pending.</span><span>Made for everyone who's ever said "Where did I put that?"</span></div>
 </footer>
 
 <script>
-// NAV MEGA
-const menus=['products','solutions','company'];
+/* ── NAV DROPDOWNS ── */
+const menuIds=['products','solutions','company'];
 function toggleMenu(id){
-  menus.forEach(m=>{
-    const el=document.getElementById('menu-'+m),btn=document.getElementById('btn-'+m);
+  menuIds.forEach(m=>{
+    const el=document.getElementById('menu-'+m);
+    const btn=document.getElementById('btn-'+m);
     if(!el||!btn)return;
-    if(m===id){const o=el.classList.contains('open');el.classList.toggle('open',!o);btn.classList.toggle('open',!o);}
-    else{el.classList.remove('open');btn.classList.remove('open');}
+    const isThis=m===id;
+    const wasOpen=el.classList.contains('is-open');
+    el.classList.toggle('is-open',isThis&&!wasOpen);
+    btn.classList.toggle('is-open',isThis&&!wasOpen);
+    if(!isThis){el.classList.remove('is-open');btn.classList.remove('is-open');}
   });
 }
 document.addEventListener('click',e=>{
   if(!e.target.closest('.nav-item')){
-    document.querySelectorAll('.mega').forEach(m=>m.classList.remove('open'));
-    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('open'));
+    menuIds.forEach(m=>{
+      document.getElementById('menu-'+m)?.classList.remove('is-open');
+      document.getElementById('btn-'+m)?.classList.remove('is-open');
+    });
   }
 });
 
-// HOW IT WORKS
-function setStep(i){document.querySelectorAll('.hw-step').forEach((s,idx)=>s.classList.toggle('active',idx===i));}
+/* ── APP PROTOTYPE STATE ── */
+let appItems=[{name:'Pen',container:'Book Box',location:'Home'}];
+let appContainers=['Book Box'];
+let currentContainer='';
+let obStep=0;
+const obSteps=[
+  {title:'Never forget\nwhere you put things.',body:'Keepin builds a searchable memory of everything you own — by box, shelf, drawer, or room.',icon:'box',grad:'linear-gradient(135deg,#f7f0fb,#fef4f2)'},
+  {title:'Scan a tag or create\na digital container.',body:'Each Keepin QR tag turns any box or drawer into a trackable container. Or create a digital one instantly.',icon:'scan',grad:'linear-gradient(135deg,#fef4f2,#fef9f0)'},
+  {title:'Add items by\nphoto or name.',body:'Open a container, take a photo, type the name. Premium users get AI auto-detection — no typing needed.',icon:'camera',grad:'linear-gradient(135deg,#f7f0fb,#fef9f0)'},
+  {title:'Search once.\nFind anything instantly.',body:'Type any item name and see exactly where you left it. Premium unlocks smart search by occasion or context.',icon:'search',grad:'linear-gradient(135deg,#fef4f2,#f7f0fb)'},
+];
+const iconSVGs={
+  box:`<svg width="42" height="42" viewBox="0 0 24 24" fill="none" style="stroke:var(--brand);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M20 7.5L12 3 4 7.5V16.5L12 21l8-4.5V7.5z"/><path d="M12 3v18M4 7.5l8 4.5 8-4.5"/></svg>`,
+  scan:`<svg width="42" height="42" viewBox="0 0 24 24" fill="none" style="stroke:var(--brand);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8M20 16v2.5A1.5 1.5 0 0 1 18.5 20H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16"/><rect x="8" y="8" width="8" height="8" rx="1"/><rect x="10" y="10" width="4" height="4" rx="0.5" fill="var(--brand)"/></svg>`,
+  camera:`<svg width="42" height="42" viewBox="0 0 24 24" fill="none" style="stroke:var(--brand);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h3l2-3h8l2 3h3a2 2 0 0 1 2 2v10z"/><circle cx="12" cy="13" r="3.5"/></svg>`,
+  search:`<svg width="42" height="42" viewBox="0 0 24 24" fill="none" style="stroke:var(--brand);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L20 20"/></svg>`,
+};
+function renderOB(){
+  const s=obSteps[obStep];
+  document.getElementById('ob-wrap').style.background=s.grad;
+  document.getElementById('ob-icon').innerHTML=iconSVGs[s.icon];
+  document.getElementById('ob-title').textContent=s.title;
+  document.getElementById('ob-body').textContent=s.body;
+  document.getElementById('ob-cta').textContent=obStep===obSteps.length-1?'Get started':'Continue';
+  const dots=document.getElementById('ob-dots');
+  dots.innerHTML=obSteps.map((_,i)=>`<div class="ob-dot ${i===obStep?'on':'off'}" style="width:${i===obStep?24:7}px"></div>`).join('');
+}
+function obNext(){
+  if(obStep<obSteps.length-1){obStep++;renderOB();}
+  else{goScreen('home');}
+}
+renderOB();
 
-// B2B TABS
-function showTab(id,btn){
-  document.querySelectorAll('.b2b-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');
-  btn.classList.add('active');
+function goScreen(id){
+  document.querySelectorAll('.app-screen').forEach(s=>s.classList.remove('visible'));
+  const target=document.getElementById('screen-'+id);
+  if(target)target.classList.add('visible');
+  // update bottom nav
+  const navMap={home:'home',organise:'organise',search:'search',profile:'profile'};
+  const tabIds=['home','organise','search','profile'];
+  tabIds.forEach(t=>{
+    const btn=document.getElementById('pnav-'+t);
+    const ic=document.getElementById('pnav-'+t+'-ic');
+    if(!btn||!ic)return;
+    const active=id===t;
+    ic.style.stroke=active?'var(--brand)':'var(--app-muted2)';
+    ic.style.strokeWidth=active?'2':'1.5';
+    btn.querySelector('.pnav-lbl').style.color=active?'var(--brand)':'var(--app-muted2)';
+    btn.querySelector('.pnav-lbl').style.fontWeight=active?'700':'400';
+  });
+  // show/hide bottom nav
+  const noNav=['onboarding','success'];
+  document.querySelector('.phone-nav-bar').style.display=noNav.includes(id)?'none':'grid';
+  if(id==='home')refreshHome();
+  if(id==='organise')refreshOrg();
+  if(id==='search'){document.getElementById('search-q').value='';renderSearchResults('');}
+}
+function refreshHome(){
+  document.getElementById('stat-con').textContent=appContainers.length;
+  document.getElementById('stat-items').textContent=appItems.length;
+  const el=document.getElementById('home-items');
+  const last=appItems.slice(-3).reverse();
+  el.innerHTML=last.map((it,i)=>{
+    const colors=[
+      {bg:'#f0fdf4',stroke:'#16a34a'},
+      {bg:'#eff6ff',stroke:'#2563eb'},
+      {bg:'#fffbeb',stroke:'#d97706'},
+      {bg:'#fff1f2',stroke:'#e11d48'},
+    ];
+    const c=colors[i%colors.length];
+    return `<div style="background:#fff;border:1px solid #ebebeb;border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:10px;margin-bottom:6px;box-shadow:0 1px 3px rgba(0,0,0,.04);">
+      <div style="width:32px;height:32px;border-radius:9px;background:${c.bg};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:${c.stroke};stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 3h8l9 9a2 2 0 0 1 0 2.828l-5.172 5.172a2 2 0 0 1-2.828 0L3 11V3z"/><circle cx="8" cy="8" r="1.5" fill="${c.stroke}"/></svg>
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;font-weight:600;color:#1d1d1f;font-family:'Inter',sans-serif;">${it.name}</div>
+        <div style="font-size:11px;color:#999;margin-top:1px;font-family:'Inter',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${it.container} · ${it.location}</div>
+      </div>
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:5px;padding:2px 8px;font-size:10px;font-weight:600;color:#15803d;white-space:nowrap;font-family:'Inter',sans-serif;">Found</div>
+    </div>`;
+  }).join('');
+}
+function refreshOrg(){
+  const el=document.getElementById('org-containers');
+  if(appContainers.length===0){el.innerHTML='';return;}
+  el.innerHTML=`<div class="screen-lbl-sm">Step 2 — Add Items Inside</div>`+
+  appContainers.map(c=>{
+    const count=appItems.filter(i=>i.container===c).length;
+    return `<button onclick="openAddItem('${c}')" style="width:100%;background:var(--app-surf);border:1px solid var(--app-border);border-radius:12px;padding:11px 13px;display:flex;align-items:center;gap:10px;margin-bottom:7px;cursor:pointer;box-sizing:border-box;font-family:'Inter',sans-serif;">
+      <div style="width:34px;height:34px;background:var(--brand-bg);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:var(--brand);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;"><path d="M20 7.5L12 3 4 7.5V16.5L12 21l8-4.5V7.5z"/></svg></div>
+      <div style="flex:1;text-align:left;"><div style="font-size:13px;font-weight:600;color:var(--app-ink);">${c}</div><div style="font-size:11px;color:var(--app-muted2);margin-top:1px;">${count} item${count!==1?'s':''}</div></div>
+      <div style="background:var(--brand);color:#fff;border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600;font-family:'Inter',sans-serif;">+ Add</div>
+    </button>`;
+  }).join('');
+}
+function addContainer(type){
+  const n=`${type} ${appContainers.length+1}`;
+  appContainers.push(n);
+  refreshOrg();
+}
+function openAddItem(container){
+  currentContainer=container;
+  document.getElementById('add-item-to').textContent=`to "${container}"`;
+  document.getElementById('new-item-input').value='';
+  goScreen('additem');
+}
+function saveItem(){
+  const v=document.getElementById('new-item-input').value.trim();
+  if(!v)return;
+  appItems.push({name:v,container:currentContainer,location:'Home'});
+  goScreen('organise');
+}
+function renderSearchResults(q){
+  const el=document.getElementById('search-results');
+  if(!q){el.innerHTML='';return;}
+  const results=appItems.filter(it=>it.name.toLowerCase().includes(q.toLowerCase()));
+  if(results.length===0){
+    el.innerHTML=`<div style="background:var(--app-surf2);border-radius:12px;padding:20px;text-align:center;margin-bottom:14px;"><div style="font-size:13px;color:var(--app-muted2);font-family:'Inter',sans-serif;">No items match "${q}"</div></div>`;
+    return;
+  }
+  el.innerHTML=`<div style="font-size:10.5px;font-weight:700;color:var(--app-muted2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;font-family:'Inter',sans-serif;">Results</div>`+
+  results.map(it=>`
+    <div class="search-result">
+      <div style="width:34px;height:34px;background:var(--brand-bg);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="stroke:var(--brand);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 3h8l9 9a2 2 0 0 1 0 2.828l-5.172 5.172a2 2 0 0 1-2.828 0L3 11V3z"/><circle cx="8" cy="8" r="1.5" fill="var(--brand)"/></svg>
+      </div>
+      <div><div style="font-size:13px;font-weight:600;color:var(--app-ink);font-family:'Inter',sans-serif;">${it.name}</div><div style="font-size:11px;color:var(--app-muted2);margin-top:1px;font-family:'Inter',sans-serif;">${it.container} · ${it.location}</div></div>
+    </div>`).join('')+`<div style="margin-bottom:14px;"></div>`;
+}
+function doSearch(){
+  const q=document.getElementById('search-q').value;
+  renderSearchResults(q);
+}
+function doRedeem(){
+  const v=document.getElementById('redeem-input').value.trim();
+  if(v.length<4)return;
+  goScreen('success');
 }
 
-// SCROLL REVEAL — fade up
-const revealObs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){e.target.classList.add('visible');}
-  });
-},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
-document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
+/* ── WEBSITE INTERACTIONS ── */
+function showB2B(id,btn){
+  document.querySelectorAll('.b2b-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.ttab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('b2b-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+function toggleFaq(el){
+  const item=el.closest('.faq-item');
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+  if(!isOpen)item.classList.add('open');
+}
 
-// BLUR CARD — iOS blurry shadow on scroll
-const blurObs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){e.target.classList.remove('out-of-view');}
-    else{e.target.classList.add('out-of-view');}
-  });
-},{threshold:.15});
-document.querySelectorAll('.blur-card').forEach(el=>blurObs.observe(el));
+/* ── SCROLL REVEAL ── */
+const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.06,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 
-// NAV background intensity on scroll
+/* staggered grid children */
+const gridRo=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.08});
+document.querySelectorAll('.steps-grid,.feat-list,.who-grid,.test-row,.price-grid').forEach(el=>gridRo.observe(el));
+
+/* ── ACTIVE SECTION TRACKING removed (no local nav / sidebar) ── */
 window.addEventListener('scroll',()=>{
-  const nav=document.querySelector('nav');
-  if(window.scrollY>40){
-    nav.style.background='rgba(247,246,243,0.95)';
-    nav.style.boxShadow='0 1px 0 rgba(0,0,0,.06)';
-  } else {
-    nav.style.background='rgba(247,246,243,0.75)';
-    nav.style.boxShadow='none';
-  }
+  const n=document.querySelector('.top-nav');
+  n.style.borderBottomColor=window.scrollY>10?'rgba(0,0,0,.12)':'rgba(0,0,0,.1)';
 });
+
+/* init */
+refreshHome();
 </script>
 </body>
 </html>
